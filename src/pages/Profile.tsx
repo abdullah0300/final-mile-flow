@@ -366,14 +366,14 @@ const Profile = () => {
                               <p className="text-2xl font-bold text-logistics-orange">
                                 £{booking.pricing?.total || "0.00"}
                               </p>
-                              <Button 
+                              {/* <Button 
                                 variant="outline" 
                                 size="sm" 
                                 className="mt-2"
                                 onClick={() => navigate(`/booking/${booking.id}`)}
                               >
                                 View Details
-                              </Button>
+                              </Button> */}
                             </div>
                           </div>
                         </CardContent>
