@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
-import { User, LogOut, Menu, X } from "lucide-react";
+import { User, LogOut, Menu, ChevronDown, Truck, Building, Phone, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,265 +13,399 @@ const Header = () => {
   const { user, signOut } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  
   const handleSignOut = async () => {
-    const { error } = await signOut();
-    if (error) {
-      toast.error('Failed to sign out');
-    } else {
-      toast.success('Signed out successfully');
+    try {
+      const { error } = await signOut();
+      if (error) {
+        toast.error('Failed to sign out');
+        console.error('Sign out error:', error);
+      } else {
+        toast.success('Signed out successfully');
+        // Wait a moment for state to update
+        setTimeout(() => {
+          navigate('/');
+        }, 100);
+      }
+    } catch (err) {
+      console.error('Sign out error:', err);
+      toast.error('An error occurred while signing out');
     }
   };
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <a href="/" className="flex items-center hover:opacity-80 transition-opacity duration-200">
-            <img src="/lovable-uploads/a79e44cd-5cd8-4248-aa3a-3b2071208a15.png" alt="Fleetory Logo" className="h-16 w-auto" />
-          </a>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+      <div className="w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 lg:h-20">
+            {/* Logo */}
+            <a 
+              href="/" 
+              className="flex items-center hover:opacity-90 transition-opacity duration-200"
+            >
+              <img 
+                src="/lovable-uploads/a79e44cd-5cd8-4248-aa3a-3b2071208a15.png" 
+                alt="Fleetory Logo" 
+                className="" style={{ height: '200px' }} 
+              />
+            </a>
 
-          {/* Desktop Navigation - Centered */}
-          <div className="hidden lg:flex flex-1 justify-center">
-            <NavigationMenu>
-            <NavigationMenuList className="space-x-1">
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/" className="text-foreground hover:text-logistics-blue transition-colors duration-200 font-medium px-3 py-2 text-sm whitespace-nowrap">
-                  Home
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-foreground hover:text-logistics-blue transition-colors duration-200 font-medium bg-transparent px-3 py-2 text-sm">
-                  Services
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="w-80 p-4 bg-white shadow-lg border rounded-lg z-50">
-                    <div className="space-y-3">
-                      <NavigationMenuLink href="/services/same-day-delivery" className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="font-semibold text-logistics-blue">Same Day Delivery</div>
-                        <div className="text-sm text-gray-600">Guaranteed same day arrival with rapid collection</div>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink href="/services/timed-delivery" className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="font-semibold text-logistics-blue">Timed Delivery</div>
-                        <div className="text-sm text-gray-600">Scheduled pickup and drop-off with guaranteed time slots</div>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink href="/services/light-haulage" className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="font-semibold text-logistics-blue">Light Haulage</div>
-                        <div className="text-sm text-gray-600">Oversized and specialist deliveries with professional handling</div>
-                      </NavigationMenuLink>
-                    </div>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/fleet" className="text-foreground hover:text-logistics-blue transition-colors duration-200 font-medium px-3 py-2 text-sm whitespace-nowrap">
-                  Our Fleet
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-foreground hover:text-logistics-blue transition-colors duration-200 font-medium bg-transparent px-3 py-2 text-sm">
-                  Industries
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="w-80 p-4 bg-white shadow-lg border rounded-lg z-50">
-                    <div className="space-y-3">
-                      <NavigationMenuLink href="/industries/healthcare" className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="font-semibold text-logistics-blue">Healthcare & Medical</div>
-                        <div className="text-sm text-gray-600">Medical supplies and pharmaceutical transport</div>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink href="/industries/legal-services" className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="font-semibold text-logistics-blue">Legal Services</div>
-                        <div className="text-sm text-gray-600">Legal document delivery and court filing</div>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink href="/industries/construction" className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="font-semibold text-logistics-blue">Construction & Trade</div>
-                        <div className="text-sm text-gray-600">Building materials and site logistics</div>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink href="/industries/retail" className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="font-semibold text-logistics-blue">Retail & E-commerce</div>
-                        <div className="text-sm text-gray-600">Last-mile delivery and inventory solutions</div>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink href="/industries/manufacturing" className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="font-semibold text-logistics-blue">Manufacturing</div>
-                        <div className="text-sm text-gray-600">Just-in-time parts and supply chain support</div>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink href="/industries/residential" className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="font-semibold text-logistics-blue">Residential Services</div>
-                        <div className="text-sm text-gray-600">House removals and furniture delivery</div>
-                      </NavigationMenuLink>
-                    </div>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/about" className="text-foreground hover:text-logistics-blue transition-colors duration-200 font-medium px-3 py-2 text-sm whitespace-nowrap">
-                  About Us
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/faq" className="text-foreground hover:text-logistics-blue transition-colors duration-200 font-medium px-3 py-2 text-sm whitespace-nowrap">
-                  FAQ
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/contact" className="text-foreground hover:text-logistics-blue transition-colors duration-200 font-medium px-3 py-2 text-sm whitespace-nowrap">
-                  Contact Us
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuLink href="/booking" className="text-foreground hover:text-logistics-blue transition-colors duration-200 font-medium px-3 py-2 text-sm whitespace-nowrap">
-                  Book Now
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-          </div>
-
-          {/* Right side - Auth + Mobile Menu */}
-          <div className="flex items-center gap-3">
-            {/* Auth Section - Hidden on small screens */}
-            <div className="hidden sm:flex items-center gap-3">
-              {user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      Welcome
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="bg-white z-50">
-  <DropdownMenuItem onClick={() => navigate('/profile')}>
-    <User className="w-4 h-4 mr-2" />
-    My Profile
-  </DropdownMenuItem>
-  <DropdownMenuItem onClick={async () => {
-    await handleSignOut();
-    navigate('/');
-  }}>
-    <LogOut className="w-4 h-4 mr-2" />
-    Sign Out
-  </DropdownMenuItem>
-</DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Button asChild variant="outline">
-                  <a href="/auth">Sign In</a>
-                </Button>
-              )}
-            </div>
-
-            {/* Mobile Menu Button */}
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Toggle menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-80 bg-white z-50">
-                <div className="flex flex-col space-y-4 mt-6">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold">Menu</h2>
-                  </div>
-                  
-                  <nav className="flex flex-col space-y-4">
-                    <a href="/" onClick={closeMobileMenu} className="text-foreground hover:text-logistics-blue transition-colors font-medium py-2">
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-1">
+              <NavigationMenu>
+                <NavigationMenuList className="flex items-center gap-1">
+                  <NavigationMenuItem>
+                    <NavigationMenuLink 
+                      href="/" 
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
+                    >
                       Home
-                    </a>
-                    
-                    <div className="space-y-2">
-                      <div className="font-medium text-foreground py-2">Services</div>
-                      <div className="pl-4 space-y-2">
-                        <a href="/services/same-day-delivery" onClick={closeMobileMenu} className="block text-muted-foreground hover:text-logistics-blue transition-colors py-1">
-                          Same Day Delivery
-                        </a>
-                        <a href="/services/timed-delivery" onClick={closeMobileMenu} className="block text-muted-foreground hover:text-logistics-blue transition-colors py-1">
-                          Timed Delivery
-                        </a>
-                        <a href="/services/light-haulage" onClick={closeMobileMenu} className="block text-muted-foreground hover:text-logistics-blue transition-colors py-1">
-                          Light Haulage
-                        </a>
-                      </div>
-                    </div>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
 
-                    <a href="/fleet" onClick={closeMobileMenu} className="text-foreground hover:text-logistics-blue transition-colors font-medium py-2">
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200">
+                      <Truck className="w-4 h-4 mr-2" />
+                      Services
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="w-[400px] p-4 bg-white shadow-xl rounded-xl border border-gray-100">
+                        <div className="grid gap-2">
+                          <NavigationMenuLink 
+                            href="/services/same-day-delivery" 
+                            className="block p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                          >
+                            <div className="font-semibold text-gray-900 group-hover:text-logistics-blue mb-1">
+                              Same Day Delivery
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              Urgent deliveries with rapid collection
+                            </div>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink 
+                            href="/services/timed-delivery" 
+                            className="block p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                          >
+                            <div className="font-semibold text-gray-900 group-hover:text-logistics-blue mb-1">
+                              Timed Delivery
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              Scheduled pickup with guaranteed time slots
+                            </div>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink 
+                            href="/services/light-haulage" 
+                            className="block p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                          >
+                            <div className="font-semibold text-gray-900 group-hover:text-logistics-blue mb-1">
+                              Light Haulage
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              Large items and specialist deliveries
+                            </div>
+                          </NavigationMenuLink>
+                        </div>
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuLink 
+                      href="/fleet" 
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
+                    >
                       Our Fleet
-                    </a>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
 
-                    <div className="space-y-2">
-                      <div className="font-medium text-foreground py-2">Industries</div>
-                      <div className="pl-4 space-y-2">
-                        <a href="/industries/healthcare" onClick={closeMobileMenu} className="block text-muted-foreground hover:text-logistics-blue transition-colors py-1">
-                          Healthcare & Medical
-                        </a>
-                        <a href="/industries/legal-services" onClick={closeMobileMenu} className="block text-muted-foreground hover:text-logistics-blue transition-colors py-1">
-                          Legal Services
-                        </a>
-                        <a href="/industries/construction" onClick={closeMobileMenu} className="block text-muted-foreground hover:text-logistics-blue transition-colors py-1">
-                          Construction & Trade
-                        </a>
-                        <a href="/industries/retail" onClick={closeMobileMenu} className="block text-muted-foreground hover:text-logistics-blue transition-colors py-1">
-                          Retail & E-commerce
-                        </a>
-                        <a href="/industries/manufacturing" onClick={closeMobileMenu} className="block text-muted-foreground hover:text-logistics-blue transition-colors py-1">
-                          Manufacturing
-                        </a>
-                        <a href="/industries/residential" onClick={closeMobileMenu} className="block text-muted-foreground hover:text-logistics-blue transition-colors py-1">
-                          Residential Services
-                        </a>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200">
+                      <Building className="w-4 h-4 mr-2" />
+                      Industries
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="w-[400px] p-4 bg-white shadow-xl rounded-xl border border-gray-100">
+                        <div className="grid gap-2">
+                          {[
+                            { href: "/industries/healthcare", title: "Healthcare & Medical", desc: "Medical supplies transport" },
+                            { href: "/industries/legal-services", title: "Legal Services", desc: "Document delivery & court filing" },
+                            { href: "/industries/construction", title: "Construction & Trade", desc: "Building materials logistics" },
+                            { href: "/industries/retail", title: "Retail & E-commerce", desc: "Last-mile delivery solutions" },
+                            { href: "/industries/manufacturing", title: "Manufacturing", desc: "Just-in-time parts delivery" },
+                            { href: "/industries/residential", title: "Residential", desc: "House removals & furniture" }
+                          ].map((item) => (
+                            <NavigationMenuLink 
+                              key={item.href}
+                              href={item.href} 
+                              className="block p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                            >
+                              <div className="font-semibold text-gray-900 group-hover:text-logistics-blue text-sm mb-0.5">
+                                {item.title}
+                              </div>
+                              <div className="text-xs text-gray-600">
+                                {item.desc}
+                              </div>
+                            </NavigationMenuLink>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
 
-                    <a href="/about" onClick={closeMobileMenu} className="text-foreground hover:text-logistics-blue transition-colors font-medium py-2">
-                      About Us
-                    </a>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink 
+                      href="/about" 
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
+                    >
+                      About
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
 
-                    <a href="/faq" onClick={closeMobileMenu} className="text-foreground hover:text-logistics-blue transition-colors font-medium py-2">
-                      FAQ
-                    </a>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink 
+                      href="/contact" 
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
+                    >
+                      Contact
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </nav>
 
-                    <a href="/contact" onClick={closeMobileMenu} className="text-foreground hover:text-logistics-blue transition-colors font-medium py-2">
-                      Contact Us
-                    </a>
+            {/* Right side - CTA and Auth */}
+            <div className="flex items-center gap-3">
+              <Button 
+                onClick={() => navigate('/booking')}
+                className="hidden lg:flex bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold px-6 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+              >
+                Book Now
+              </Button>
 
-                    <a href="/booking" onClick={closeMobileMenu} className="bg-logistics-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-logistics-blue/90 transition-colors text-center">
-                      Book Now
-                    </a>
+              {/* Desktop Auth */}
+              <div className="hidden lg:flex items-center">
+                {user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button 
+                        variant="ghost" 
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-50"
+                      >
+                        <User className="w-5 h-5 text-gray-700" />
+                        <span className="text-sm font-medium text-gray-700">Account</span>
+                        <ChevronDown className="w-4 h-4 text-gray-500" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56 bg-white shadow-lg rounded-lg border border-gray-100 p-2">
+                      <DropdownMenuItem 
+                        onClick={() => navigate('/profile')}
+                        className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-50 cursor-pointer"
+                      >
+                        <User className="w-4 h-4 text-gray-600" />
+                        <span className="text-sm font-medium text-gray-700">My Profile</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => navigate('/quotations')}
+                        className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-50 cursor-pointer"
+                      >
+                        <FileText className="w-4 h-4 text-gray-600" />
+                        <span className="text-sm font-medium text-gray-700">My Bookings</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator className="my-2" />
+                      <DropdownMenuItem 
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          await handleSignOut();
+                        }}
+                        className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-red-50 cursor-pointer group"
+                      >
+                        <LogOut className="w-4 h-4 text-gray-600 group-hover:text-red-600" />
+                        <span className="text-sm font-medium text-gray-700 group-hover:text-red-600">
+                          Sign Out
+                        </span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button 
+                    onClick={() => navigate('/auth')}
+                    variant="outline"
+                    className="text-sm font-medium px-4 py-2 border-gray-300 hover:border-gray-400"
+                  >
+                    Sign In
+                  </Button>
+                )}
+              </div>
 
-                    {/* Mobile Auth Section */}
-                    <div className="pt-4 border-t border-border mt-6">
-                      {user ? (
-                        <>
-                          <a href="/profile" onClick={closeMobileMenu} className="block text-foreground hover:text-logistics-blue transition-colors font-medium py-2">
-                            My Profile
-                          </a>
-                          <Button onClick={handleSignOut} variant="outline" className="w-full mt-2">
-                            <LogOut className="w-4 h-4 mr-2" />
-                            Sign Out
-                          </Button>
-                        </>
-                      ) : (
-                        <Button asChild variant="outline" className="w-full">
-                          <a href="/auth">Sign In</a>
-                        </Button>
-                      )}
-                    </div>
-                  </nav>
-                </div>
-              </SheetContent>
-            </Sheet>
+              {/* Mobile Menu Button */}
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="lg:hidden"
+                onClick={() => setMobileMenuOpen(true)}
+              >
+                <Menu className="h-6 w-6 text-gray-700" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Sheet */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side="right" className="w-full max-w-sm bg-white p-0">
+          <div className="flex flex-col h-full">
+            {/* Mobile Menu Header */}
+            <div className="p-6 border-b border-gray-100">
+              <img 
+                src="/lovable-uploads/a79e44cd-5cd8-4248-aa3a-3b2071208a15.png" 
+                alt="Fleetory" 
+                className="h-10 w-auto"
+              />
+            </div>
+            
+            {/* Mobile Menu Content */}
+            <nav className="flex-1 overflow-y-auto p-6">
+              <div className="space-y-1">
+                <a 
+                  href="/" 
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Home
+                </a>
+
+                <div className="pt-4 pb-2">
+                  <h3 className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Services
+                  </h3>
+                </div>
+                <a 
+                  href="/services/same-day-delivery" 
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  Same Day Delivery
+                </a>
+                <a 
+                  href="/services/timed-delivery" 
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  Timed Delivery
+                </a>
+                <a 
+                  href="/services/light-haulage" 
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  Light Haulage
+                </a>
+
+                <a 
+                  href="/fleet" 
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Our Fleet
+                </a>
+
+                <div className="pt-4 pb-2">
+                  <h3 className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Industries
+                  </h3>
+                </div>
+                {[
+                  { href: "/industries/healthcare", title: "Healthcare & Medical" },
+                  { href: "/industries/legal-services", title: "Legal Services" },
+                  { href: "/industries/construction", title: "Construction & Trade" },
+                  { href: "/industries/retail", title: "Retail & E-commerce" },
+                  { href: "/industries/manufacturing", title: "Manufacturing" },
+                  { href: "/industries/residential", title: "Residential" }
+                ].map((item) => (
+                  <a 
+                    key={item.href}
+                    href={item.href}
+                    onClick={closeMobileMenu}
+                    className="block px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                  >
+                    {item.title}
+                  </a>
+                ))}
+
+                <a 
+                  href="/about" 
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                >
+                  About Us
+                </a>
+
+                <a 
+                  href="/contact" 
+                  onClick={closeMobileMenu}
+                  className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Contact Us
+                </a>
+              </div>
+            </nav>
+
+            {/* Mobile Menu Footer */}
+            <div className="border-t border-gray-100 p-6 space-y-3">
+              <Button 
+                onClick={() => {
+                  navigate('/booking');
+                  closeMobileMenu();
+                }}
+                className="w-full bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-3 rounded-lg"
+              >
+                Book Now
+              </Button>
+
+              {user ? (
+                <div className="space-y-2 pt-2">
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      navigate('/profile');
+                      closeMobileMenu();
+                    }}
+                    className="w-full justify-start"
+                  >
+                    <User className="w-4 h-4 mr-3" />
+                    My Profile
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={async () => {
+                      await handleSignOut();
+                      closeMobileMenu();
+                    }}
+                    className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <LogOut className="w-4 h-4 mr-3" />
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <Button 
+                  variant="outline"
+                  onClick={() => {
+                    navigate('/auth');
+                    closeMobileMenu();
+                  }}
+                  className="w-full"
+                >
+                  Sign In
+                </Button>
+              )}
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 };

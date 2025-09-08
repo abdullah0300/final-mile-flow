@@ -15,7 +15,7 @@ const ContactPage = () => {
               Contact Us
             </h1>
             <p className="text-xl md:text-2xl leading-relaxed opacity-90 mb-4">
-              Get in touch with our logistics experts
+              We are based in Derby, East Midlands however we provide service nationwide. We are happy to go into the busiest parts of major cities and also those small remote villages up in the district or by the sea sides.
             </p>
             <p className="text-lg leading-relaxed opacity-80">
               Available 24/7 for urgent deliveries across the UK

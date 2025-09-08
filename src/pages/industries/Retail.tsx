@@ -1,14 +1,28 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingBag, Package, Truck, Users, CheckCircle, ArrowRight, Clock } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ShoppingBag,
+  Package,
+  Truck,
+  Users,
+  CheckCircle,
+  ArrowRight,
+  Clock,
+} from "lucide-react";
 
 const Retail = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      
+
       {/* SEO-optimized hero section */}
       <section className="pt-24 pb-16 bg-gradient-to-br from-logistics-blue to-logistics-blue-light">
         <div className="container mx-auto px-6">
@@ -20,24 +34,25 @@ const Retail = () => {
               Last-mile delivery solutions and inventory logistics across the UK
             </p>
             <p className="text-lg leading-relaxed opacity-80 max-w-3xl mx-auto mb-8">
-              Fleetory provides comprehensive courier services for retail and e-commerce businesses with same-day 
-              customer deliveries, inventory restocking, and store transfer services. Keep your customers satisfied 
-              with our reliable last-mile delivery solutions.
+              Fleetory provides comprehensive courier services for retail and
+              e-commerce businesses with same-day customer deliveries, inventory
+              restocking, and store transfer services. Keep your customers
+              satisfied with our reliable last-mile delivery solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+              <Button
                 size="lg"
                 className="bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold px-8 py-4 text-lg"
-                onClick={() => window.location.href = '/booking'}
+                onClick={() => (window.location.href = "/booking")}
               >
                 Get Retail Quote
               </Button>
-              <Button 
+              <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
               >
-                Call: 0800 123 4567
+                07539 868853
               </Button>
             </div>
           </div>
@@ -62,7 +77,8 @@ const Retail = () => {
                 <Users className="h-12 w-12 mx-auto text-green-500 mb-4" />
                 <CardTitle className="text-xl">Customer Deliveries</CardTitle>
                 <CardDescription>
-                  Same-day delivery to your customers for enhanced satisfaction and loyalty
+                  Same-day delivery to your customers for enhanced satisfaction
+                  and loyalty
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -71,7 +87,7 @@ const Retail = () => {
                     "Same-day customer delivery",
                     "Next-day fulfillment",
                     "Time-slot deliveries",
-                    "Customer notifications"
+                    "Customer notifications",
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
@@ -87,7 +103,8 @@ const Retail = () => {
                 <Package className="h-12 w-12 mx-auto text-blue-500 mb-4" />
                 <CardTitle className="text-xl">Inventory Restocking</CardTitle>
                 <CardDescription>
-                  Urgent inventory deliveries to keep your stores stocked and sales flowing
+                  Urgent inventory deliveries to keep your stores stocked and
+                  sales flowing
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -96,7 +113,7 @@ const Retail = () => {
                     "Urgent stock replenishment",
                     "Supplier to store delivery",
                     "Emergency inventory",
-                    "Seasonal stock management"
+                    "Seasonal stock management",
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-blue-500 mr-3 flex-shrink-0" />
@@ -112,7 +129,8 @@ const Retail = () => {
                 <ShoppingBag className="h-12 w-12 mx-auto text-purple-500 mb-4" />
                 <CardTitle className="text-xl">Store Transfers</CardTitle>
                 <CardDescription>
-                  Inter-store transfers and returns collection for multi-location retailers
+                  Inter-store transfers and returns collection for
+                  multi-location retailers
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -121,7 +139,7 @@ const Retail = () => {
                     "Store-to-store transfers",
                     "Returns collection",
                     "Display transfers",
-                    "Equipment movement"
+                    "Equipment movement",
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-purple-500 mr-3 flex-shrink-0" />
@@ -143,7 +161,8 @@ const Retail = () => {
               Retail Industry Solutions
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Supporting retailers, e-commerce businesses, and shopping centers across the UK
+              Supporting retailers, e-commerce businesses, and shopping centers
+              across the UK
             </p>
           </div>
 
@@ -151,44 +170,48 @@ const Retail = () => {
             {[
               {
                 title: "E-commerce Fulfillment",
-                description: "Complete last-mile delivery solutions for online retailers and marketplaces.",
+                description:
+                  "Complete last-mile delivery solutions for online retailers and marketplaces.",
                 features: [
                   "Same-day fulfillment",
                   "Customer delivery",
                   "Returns processing",
-                  "Peak season support"
-                ]
+                  "Peak season support",
+                ],
               },
               {
                 title: "High Street Retail",
-                description: "Supporting traditional retail stores with inventory and customer delivery services.",
+                description:
+                  "Supporting traditional retail stores with inventory and customer delivery services.",
                 features: [
                   "Stock replenishment",
                   "Customer home delivery",
                   "Store transfers",
-                  "Emergency supplies"
-                ]
+                  "Emergency supplies",
+                ],
               },
               {
                 title: "Fashion & Clothing",
-                description: "Specialized handling for fashion retailers with seasonal collections and sizing.",
+                description:
+                  "Specialized handling for fashion retailers with seasonal collections and sizing.",
                 features: [
                   "Garment delivery",
                   "Seasonal collections",
                   "Size exchanges",
-                  "Fashion shows logistics"
-                ]
+                  "Fashion shows logistics",
+                ],
               },
               {
                 title: "Electronics & Technology",
-                description: "Secure transport of high-value electronics and technology products.",
+                description:
+                  "Secure transport of high-value electronics and technology products.",
                 features: [
                   "High-value items",
                   "Secure transport",
                   "Installation delivery",
-                  "Tech support logistics"
-                ]
-              }
+                  "Tech support logistics",
+                ],
+              },
             ].map((solution, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
@@ -196,12 +219,17 @@ const Retail = () => {
                     <ArrowRight className="h-5 w-5 text-logistics-orange mr-2" />
                     {solution.title}
                   </CardTitle>
-                  <CardDescription className="text-base">{solution.description}</CardDescription>
+                  <CardDescription className="text-base">
+                    {solution.description}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
                     {solution.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-sm">
+                      <li
+                        key={featureIndex}
+                        className="flex items-center text-sm"
+                      >
                         <CheckCircle className="h-4 w-4 text-logistics-orange mr-3 flex-shrink-0" />
                         {feature}
                       </li>
@@ -222,7 +250,8 @@ const Retail = () => {
               Why Retailers Choose Fleetory
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Dedicated solutions for the fast-paced retail and e-commerce environment
+              Dedicated solutions for the fast-paced retail and e-commerce
+              environment
             </p>
           </div>
 
@@ -232,7 +261,8 @@ const Retail = () => {
                 <Clock className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Same-Day Delivery</CardTitle>
                 <CardDescription>
-                  Meet customer expectations with rapid same-day delivery options
+                  Meet customer expectations with rapid same-day delivery
+                  options
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -242,7 +272,8 @@ const Retail = () => {
                 <Users className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Customer Focus</CardTitle>
                 <CardDescription>
-                  Professional drivers providing excellent customer service representation
+                  Professional drivers providing excellent customer service
+                  representation
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -252,7 +283,8 @@ const Retail = () => {
                 <Package className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Secure Handling</CardTitle>
                 <CardDescription>
-                  Careful handling of retail products with appropriate packaging protection
+                  Careful handling of retail products with appropriate packaging
+                  protection
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -262,7 +294,8 @@ const Retail = () => {
                 <Truck className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Flexible Fleet</CardTitle>
                 <CardDescription>
-                  Varied vehicle sizes to handle everything from small parcels to bulk inventory
+                  Varied vehicle sizes to handle everything from small parcels
+                  to bulk inventory
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -278,21 +311,22 @@ const Retail = () => {
               Boost Your Retail Success
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Partner with Fleetory to enhance your customer experience with reliable delivery services. 
-              From inventory management to customer fulfillment, we've got your logistics covered.
+              Partner with Fleetory to enhance your customer experience with
+              reliable delivery services. From inventory management to customer
+              fulfillment, we've got your logistics covered.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+              <Button
                 size="lg"
                 className="bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold px-8 py-4 text-lg"
-                onClick={() => window.location.href = '/booking'}
+                onClick={() => (window.location.href = "/booking")}
               >
                 Get Retail Quote
               </Button>
-              <Button 
+              <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
               >
                 Speak to Retail Specialist
               </Button>

@@ -56,7 +56,7 @@ const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-2 border-white text-white hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg rounded-full transition-all duration-300"
+              className="border-2 border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg rounded-full transition-all duration-300"
               onClick={() => window.location.href = '/contact'}
             >
               Request Call Back

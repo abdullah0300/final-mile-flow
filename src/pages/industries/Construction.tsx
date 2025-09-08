@@ -1,14 +1,28 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Truck, Wrench, HardHat, CheckCircle, ArrowRight, Timer } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Building2,
+  Truck,
+  Wrench,
+  HardHat,
+  CheckCircle,
+  ArrowRight,
+  Timer,
+} from "lucide-react";
 
 const Construction = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      
+
       {/* SEO-optimized hero section */}
       <section className="pt-24 pb-16 bg-gradient-to-br from-logistics-blue to-logistics-blue-light">
         <div className="container mx-auto px-6">
@@ -17,27 +31,30 @@ const Construction = () => {
               Construction & Trade Courier Services
             </h1>
             <p className="text-xl md:text-2xl leading-relaxed opacity-90 mb-8">
-              Building material deliveries and construction site logistics across the UK
+              Building material deliveries and construction site logistics
+              across the UK
             </p>
             <p className="text-lg leading-relaxed opacity-80 max-w-3xl mx-auto mb-8">
-              Fleetory provides specialized courier services for the construction industry with urgent tool deliveries, 
-              building material transport, and site-to-site logistics. Our fleet can handle everything from small tools 
-              to heavy construction equipment across all UK construction sites.
+              Fleetory provides specialized courier services for the
+              construction industry with urgent tool deliveries, building
+              material transport, and site-to-site logistics. Our fleet can
+              handle everything from small tools to heavy construction equipment
+              across all UK construction sites.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+              <Button
                 size="lg"
                 className="bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold px-8 py-4 text-lg"
-                onClick={() => window.location.href = '/booking'}
+                onClick={() => (window.location.href = "/booking")}
               >
                 Get Construction Quote
               </Button>
-              <Button 
+              <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
               >
-                Call: 0800 123 4567
+                07539 868853
               </Button>
             </div>
           </div>
@@ -52,7 +69,8 @@ const Construction = () => {
               Construction Delivery Services
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Keeping your construction projects on schedule with reliable delivery services
+              Keeping your construction projects on schedule with reliable
+              delivery services
             </p>
           </div>
 
@@ -62,7 +80,8 @@ const Construction = () => {
                 <Building2 className="h-12 w-12 mx-auto text-orange-500 mb-4" />
                 <CardTitle className="text-xl">Building Materials</CardTitle>
                 <CardDescription>
-                  Urgent delivery of construction materials to keep your projects on track
+                  Urgent delivery of construction materials to keep your
+                  projects on track
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -71,7 +90,7 @@ const Construction = () => {
                     "Urgent material delivery",
                     "Specialist building supplies",
                     "Site-to-site transfer",
-                    "Heavy material transport"
+                    "Heavy material transport",
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-orange-500 mr-3 flex-shrink-0" />
@@ -85,9 +104,12 @@ const Construction = () => {
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader className="text-center">
                 <Wrench className="h-12 w-12 mx-auto text-blue-500 mb-4" />
-                <CardTitle className="text-xl">Tool & Equipment Delivery</CardTitle>
+                <CardTitle className="text-xl">
+                  Tool & Equipment Delivery
+                </CardTitle>
                 <CardDescription>
-                  Fast delivery of tools and equipment to construction sites and trade professionals
+                  Fast delivery of tools and equipment to construction sites and
+                  trade professionals
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -96,7 +118,7 @@ const Construction = () => {
                     "Power tool delivery",
                     "Heavy equipment transport",
                     "Tool rental logistics",
-                    "Emergency tool delivery"
+                    "Emergency tool delivery",
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-blue-500 mr-3 flex-shrink-0" />
@@ -112,7 +134,8 @@ const Construction = () => {
                 <HardHat className="h-12 w-12 mx-auto text-yellow-500 mb-4" />
                 <CardTitle className="text-xl">Site Logistics</CardTitle>
                 <CardDescription>
-                  Comprehensive logistics support for construction sites and trade operations
+                  Comprehensive logistics support for construction sites and
+                  trade operations
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -121,7 +144,7 @@ const Construction = () => {
                     "Multi-site coordination",
                     "Project logistics",
                     "Waste removal",
-                    "Supply chain support"
+                    "Supply chain support",
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-yellow-500 mr-3 flex-shrink-0" />
@@ -143,7 +166,8 @@ const Construction = () => {
               Construction Industry Solutions
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Supporting builders, contractors, and trade professionals across the UK
+              Supporting builders, contractors, and trade professionals across
+              the UK
             </p>
           </div>
 
@@ -151,44 +175,48 @@ const Construction = () => {
             {[
               {
                 title: "General Contractors",
-                description: "Complete logistics support for general contracting projects from materials to equipment.",
+                description:
+                  "Complete logistics support for general contracting projects from materials to equipment.",
                 features: [
                   "Building material delivery",
                   "Equipment transport",
                   "Site coordination",
-                  "Emergency supplies"
-                ]
+                  "Emergency supplies",
+                ],
               },
               {
                 title: "Trade Specialists",
-                description: "Specialized delivery services for electricians, plumbers, and other skilled trades.",
+                description:
+                  "Specialized delivery services for electricians, plumbers, and other skilled trades.",
                 features: [
                   "Specialist tools",
                   "Trade materials",
                   "Component delivery",
-                  "Client site delivery"
-                ]
+                  "Client site delivery",
+                ],
               },
               {
                 title: "Commercial Projects",
-                description: "Large-scale logistics support for commercial construction and infrastructure projects.",
+                description:
+                  "Large-scale logistics support for commercial construction and infrastructure projects.",
                 features: [
                   "Bulk material transport",
                   "Heavy equipment",
                   "Project coordination",
-                  "Multi-site logistics"
-                ]
+                  "Multi-site logistics",
+                ],
               },
               {
                 title: "Residential Construction",
-                description: "Home building and renovation logistics from materials to finishing supplies.",
+                description:
+                  "Home building and renovation logistics from materials to finishing supplies.",
                 features: [
                   "Home building supplies",
                   "Renovation materials",
                   "Finishing products",
-                  "Homeowner delivery"
-                ]
-              }
+                  "Homeowner delivery",
+                ],
+              },
             ].map((solution, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
@@ -196,12 +224,17 @@ const Construction = () => {
                     <ArrowRight className="h-5 w-5 text-logistics-orange mr-2" />
                     {solution.title}
                   </CardTitle>
-                  <CardDescription className="text-base">{solution.description}</CardDescription>
+                  <CardDescription className="text-base">
+                    {solution.description}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
                     {solution.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-sm">
+                      <li
+                        key={featureIndex}
+                        className="flex items-center text-sm"
+                      >
                         <CheckCircle className="h-4 w-4 text-logistics-orange mr-3 flex-shrink-0" />
                         {feature}
                       </li>
@@ -222,7 +255,8 @@ const Construction = () => {
               Why Choose Fleetory for Construction
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Specialized vehicles and experienced drivers for construction industry needs
+              Specialized vehicles and experienced drivers for construction
+              industry needs
             </p>
           </div>
 
@@ -232,7 +266,8 @@ const Construction = () => {
                 <Truck className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Heavy Duty Fleet</CardTitle>
                 <CardDescription>
-                  Specialized vehicles capable of transporting heavy construction materials
+                  Specialized vehicles capable of transporting heavy
+                  construction materials
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -242,7 +277,8 @@ const Construction = () => {
                 <Timer className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Project Deadlines</CardTitle>
                 <CardDescription>
-                  Understanding of construction timelines and critical delivery windows
+                  Understanding of construction timelines and critical delivery
+                  windows
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -252,7 +288,8 @@ const Construction = () => {
                 <HardHat className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Site Access</CardTitle>
                 <CardDescription>
-                  Experienced with construction site access and safety requirements
+                  Experienced with construction site access and safety
+                  requirements
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -262,7 +299,8 @@ const Construction = () => {
                 <Building2 className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Industry Knowledge</CardTitle>
                 <CardDescription>
-                  Deep understanding of construction industry logistics and requirements
+                  Deep understanding of construction industry logistics and
+                  requirements
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -278,21 +316,22 @@ const Construction = () => {
               Keep Your Construction Projects Moving
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Trust Fleetory for reliable construction logistics. From urgent tool delivery to heavy 
-              material transport, we keep your projects on schedule and on budget.
+              Trust Fleetory for reliable construction logistics. From urgent
+              tool delivery to heavy material transport, we keep your projects
+              on schedule and on budget.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+              <Button
                 size="lg"
                 className="bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold px-8 py-4 text-lg"
-                onClick={() => window.location.href = '/booking'}
+                onClick={() => (window.location.href = "/booking")}
               >
                 Get Construction Quote
               </Button>
-              <Button 
+              <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
               >
                 Speak to Construction Specialist
               </Button>

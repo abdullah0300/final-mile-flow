@@ -1,14 +1,28 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, Thermometer, Clock, Shield, CheckCircle, ArrowRight, Truck } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Heart,
+  Thermometer,
+  Clock,
+  Shield,
+  CheckCircle,
+  ArrowRight,
+  Truck,
+} from "lucide-react";
 
 const Healthcare = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      
+
       {/* SEO-optimized hero section */}
       <section className="pt-24 pb-16 bg-gradient-to-br from-logistics-blue to-logistics-blue-light">
         <div className="container mx-auto px-6">
@@ -17,25 +31,27 @@ const Healthcare = () => {
               Healthcare & Medical Courier Services
             </h1>
             <p className="text-xl md:text-2xl leading-relaxed opacity-90 mb-8">
-              Urgent medical supply deliveries and pharmaceutical transport across the UK
+              Urgent medical supply deliveries and pharmaceutical transport
+              across the UK
             </p>
             <p className="text-lg leading-relaxed opacity-80 max-w-3xl mx-auto mb-8">
-              Fleetory provides specialized courier services for the healthcare industry with temperature-controlled 
-              transport, urgent medical supply deliveries, and pharmaceutical logistics. Our certified drivers understand 
-              the critical nature of medical deliveries.
+              Fleetory provides specialized courier services for the healthcare
+              industry with temperature-controlled transport, urgent medical
+              supply deliveries, and pharmaceutical logistics. Our certified
+              drivers understand the critical nature of medical deliveries.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+              <Button
                 size="lg"
                 className="bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold px-8 py-4 text-lg"
-                onClick={() => window.location.href = '/booking'}
+                onClick={() => (window.location.href = "/booking")}
               >
                 Get Medical Courier Quote
               </Button>
-              <Button 
+              <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
               >
                 Emergency Line: 0800 123 4567
               </Button>
@@ -52,7 +68,8 @@ const Healthcare = () => {
               Specialized Medical Delivery Services
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Professional handling of medical supplies, pharmaceuticals, and laboratory specimens
+              Professional handling of medical supplies, pharmaceuticals, and
+              laboratory specimens
             </p>
           </div>
 
@@ -60,9 +77,12 @@ const Healthcare = () => {
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader className="text-center">
                 <Heart className="h-12 w-12 mx-auto text-red-500 mb-4" />
-                <CardTitle className="text-xl">Emergency Medical Supplies</CardTitle>
+                <CardTitle className="text-xl">
+                  Emergency Medical Supplies
+                </CardTitle>
                 <CardDescription>
-                  Critical medical equipment and supplies delivered with emergency priority
+                  Critical medical equipment and supplies delivered with
+                  emergency priority
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -71,7 +91,7 @@ const Healthcare = () => {
                     "Life-saving medications",
                     "Emergency equipment",
                     "Blood products transport",
-                    "24/7 availability"
+                    "24/7 availability",
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-red-500 mr-3 flex-shrink-0" />
@@ -85,9 +105,12 @@ const Healthcare = () => {
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader className="text-center">
                 <Thermometer className="h-12 w-12 mx-auto text-blue-500 mb-4" />
-                <CardTitle className="text-xl">Temperature-Controlled Transport</CardTitle>
+                <CardTitle className="text-xl">
+                  Temperature-Controlled Transport
+                </CardTitle>
                 <CardDescription>
-                  Climate-controlled delivery for temperature-sensitive pharmaceuticals
+                  Climate-controlled delivery for temperature-sensitive
+                  pharmaceuticals
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -96,7 +119,7 @@ const Healthcare = () => {
                     "Refrigerated vehicles",
                     "Frozen transport options",
                     "Temperature monitoring",
-                    "Vaccine delivery"
+                    "Vaccine delivery",
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-blue-500 mr-3 flex-shrink-0" />
@@ -112,7 +135,8 @@ const Healthcare = () => {
                 <Shield className="h-12 w-12 mx-auto text-green-500 mb-4" />
                 <CardTitle className="text-xl">Laboratory Specimens</CardTitle>
                 <CardDescription>
-                  Secure transport of biological samples and laboratory materials
+                  Secure transport of biological samples and laboratory
+                  materials
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -121,7 +145,7 @@ const Healthcare = () => {
                     "Secure specimen transport",
                     "Chain of custody tracking",
                     "Biohazard handling",
-                    "Time-critical delivery"
+                    "Time-critical delivery",
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
@@ -143,7 +167,8 @@ const Healthcare = () => {
               Healthcare Delivery Solutions
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Supporting healthcare providers across hospitals, clinics, and pharmacies
+              Supporting healthcare providers across hospitals, clinics, and
+              pharmacies
             </p>
           </div>
 
@@ -151,44 +176,48 @@ const Healthcare = () => {
             {[
               {
                 title: "Hospital-to-Hospital Transfers",
-                description: "Urgent transfers of medical equipment, supplies, and patient records between healthcare facilities.",
+                description:
+                  "Urgent transfers of medical equipment, supplies, and patient records between healthcare facilities.",
                 features: [
                   "Emergency equipment transfer",
                   "Patient record delivery",
                   "Medical device transport",
-                  "Inter-hospital logistics"
-                ]
+                  "Inter-hospital logistics",
+                ],
               },
               {
                 title: "Pharmacy Distribution",
-                description: "Reliable pharmaceutical delivery to pharmacies, clinics, and healthcare providers.",
+                description:
+                  "Reliable pharmaceutical delivery to pharmacies, clinics, and healthcare providers.",
                 features: [
                   "Prescription medications",
                   "Controlled substance transport",
                   "Pharmacy stock replenishment",
-                  "Patient home delivery"
-                ]
+                  "Patient home delivery",
+                ],
               },
               {
                 title: "GP Practice Support",
-                description: "Medical supplies and equipment delivery to GP surgeries and primary care facilities.",
+                description:
+                  "Medical supplies and equipment delivery to GP surgeries and primary care facilities.",
                 features: [
                   "Surgery equipment",
                   "Medical consumables",
                   "Vaccination supplies",
-                  "Diagnostic equipment"
-                ]
+                  "Diagnostic equipment",
+                ],
               },
               {
                 title: "Care Home Services",
-                description: "Specialized delivery services for residential care facilities and nursing homes.",
+                description:
+                  "Specialized delivery services for residential care facilities and nursing homes.",
                 features: [
                   "Medication delivery",
                   "Medical equipment",
                   "Specialized care supplies",
-                  "Emergency provisions"
-                ]
-              }
+                  "Emergency provisions",
+                ],
+              },
             ].map((solution, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
@@ -196,12 +225,17 @@ const Healthcare = () => {
                     <ArrowRight className="h-5 w-5 text-logistics-orange mr-2" />
                     {solution.title}
                   </CardTitle>
-                  <CardDescription className="text-base">{solution.description}</CardDescription>
+                  <CardDescription className="text-base">
+                    {solution.description}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
                     {solution.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-sm">
+                      <li
+                        key={featureIndex}
+                        className="flex items-center text-sm"
+                      >
                         <CheckCircle className="h-4 w-4 text-logistics-orange mr-3 flex-shrink-0" />
                         {feature}
                       </li>
@@ -232,7 +266,8 @@ const Healthcare = () => {
                 <Shield className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">GDPR Compliant</CardTitle>
                 <CardDescription>
-                  Full data protection compliance for patient information and medical records
+                  Full data protection compliance for patient information and
+                  medical records
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -242,7 +277,8 @@ const Healthcare = () => {
                 <Clock className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Time-Critical Service</CardTitle>
                 <CardDescription>
-                  Understanding the urgent nature of medical deliveries with priority handling
+                  Understanding the urgent nature of medical deliveries with
+                  priority handling
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -250,9 +286,12 @@ const Healthcare = () => {
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
                 <Thermometer className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
-                <CardTitle className="text-lg">Temperature Validation</CardTitle>
+                <CardTitle className="text-lg">
+                  Temperature Validation
+                </CardTitle>
                 <CardDescription>
-                  Continuous monitoring and validation of temperature-sensitive shipments
+                  Continuous monitoring and validation of temperature-sensitive
+                  shipments
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -262,7 +301,8 @@ const Healthcare = () => {
                 <Truck className="h-12 w-12 mx-auto text-logistics-orange mb-4" />
                 <CardTitle className="text-lg">Specialized Vehicles</CardTitle>
                 <CardDescription>
-                  Medical-grade transport vehicles equipped for healthcare deliveries
+                  Medical-grade transport vehicles equipped for healthcare
+                  deliveries
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -278,21 +318,22 @@ const Healthcare = () => {
               Partner with Healthcare Delivery Experts
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Trust Fleetory for your critical healthcare deliveries. Our specialized medical courier 
-              service ensures your patients receive what they need, when they need it.
+              Trust Fleetory for your critical healthcare deliveries. Our
+              specialized medical courier service ensures your patients receive
+              what they need, when they need it.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+              <Button
                 size="lg"
                 className="bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold px-8 py-4 text-lg"
-                onClick={() => window.location.href = '/booking'}
+                onClick={() => (window.location.href = "/booking")}
               >
                 Get Medical Quote
               </Button>
-              <Button 
+              <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
               >
                 Speak to Healthcare Specialist
               </Button>
