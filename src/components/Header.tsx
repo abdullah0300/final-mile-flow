@@ -95,17 +95,7 @@ const Header = () => {
                               Scheduled pickup with guaranteed time slots
                             </div>
                           </NavigationMenuLink>
-                          <NavigationMenuLink 
-                            href="/services/light-haulage" 
-                            className="block p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
-                          >
-                            <div className="font-semibold text-gray-900 group-hover:text-logistics-blue mb-1">
-                              Light Haulage
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              Large items and specialist deliveries
-                            </div>
-                          </NavigationMenuLink>
+                          
                         </div>
                       </div>
                     </NavigationMenuContent>

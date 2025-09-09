@@ -27,7 +27,7 @@ const LightHaulage = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Light Haulage & Specialist Delivery
+              Specialist Delivery
             </h1>
             <p className="text-xl md:text-2xl leading-relaxed opacity-90 mb-8">
               Oversized, palletised, and high-value goods handled with
@@ -47,13 +47,15 @@ const LightHaulage = () => {
               >
                 Get Light Haulage Quote
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
-              >
-                07539 868853
-              </Button>
+              <a href="tel:+447352288232">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                >
+                  Speak to expert
+                </Button>
+              </a>
             </div>
           </div>
         </div>

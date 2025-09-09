@@ -49,7 +49,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification email to business
     const businessEmailResponse = await resend.emails.send({
       from: "Fleetory <onboarding@resend.dev>",
-      to: ["fleetory@outlook.com"],
+      to: [" info@fleetory.co.uk"],
       subject: `New Booking Confirmation - ${referenceNumber}`,
       html: `
         <h2>New Booking Received</h2>
@@ -113,7 +113,7 @@ const handler = async (req: Request): Promise<Response> => {
             <h4>Need to make changes?</h4>
             <p>📞 Call us: <strong>+44 7539868853</strong></p>
             <p>💬 WhatsApp: <a href="https://wa.me/447352288232">+44 7352288232</a></p>
-            <p>✉️ Email: <strong>fleetory@outlook.com</strong></p>
+            <p>✉️ Email: <strong> info@fleetory.co.uk</strong></p>
             <p>Please quote your reference number: <strong>${referenceNumber}</strong></p>
           </div>
 

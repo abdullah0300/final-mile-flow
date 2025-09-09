@@ -33,7 +33,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification email to business
     const businessEmailResponse = await resend.emails.send({
       from: "Fleetory <onboarding@resend.dev>",
-      to: ["fleetory@outlook.com"],
+      to: [" info@fleetory.co.uk"],
       subject: "New Contact Form Submission - Call Back Request",
       html: `
         <h2>New Call Back Request</h2>

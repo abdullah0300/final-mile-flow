@@ -48,13 +48,15 @@ const Healthcare = () => {
               >
                 Get Medical Courier Quote
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
-              >
-                Emergency Line: 0800 123 4567
-              </Button>
+               <a href="tel:+447352288232">
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                >
+                  Speak to expert
+                </Button>
+              </a>
             </div>
           </div>
         </div>
@@ -330,13 +332,15 @@ const Healthcare = () => {
               >
                 Get Medical Quote
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
-              >
-                Speak to Healthcare Specialist
-              </Button>
+               <a href="tel:+447352288232">
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                >
+                  Speak to expert
+                </Button>
+              </a>
             </div>
           </div>
         </div>

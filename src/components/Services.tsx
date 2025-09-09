@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, Truck, Users, MapPin } from "lucide-react";
 
@@ -7,20 +13,38 @@ const Services = () => {
     {
       icon: Clock,
       title: "Standard Same Day Delivery",
-      description: "Guaranteed Same Day Arrival - No Delays. Perfect for time-sensitive shipments that need to arrive by the end of the day.",
-      features: ["Rapid collection (usually within 60 minutes)", "Direct delivery with drivers tracked from start to finish", "POD (Proof of Delivery) provided immediately", "Legal documents, business parcels, urgent stock items"],
+      description:
+        "Guaranteed Same Day Arrival - No Delays. Perfect for time-sensitive shipments that need to arrive by the end of the day.",
+      features: [
+        "Rapid collection (usually within 60 minutes)",
+        "Direct delivery with drivers tracked from start to finish",
+        "POD (Proof of Delivery) provided immediately",
+        "Legal documents, business parcels, urgent stock items",
+      ],
     },
     {
       icon: MapPin,
       title: "Timed Delivery",
-      description: "When your delivery has a deadline - we make it happen. Ideal when your package must arrive at a specific time.",
-      features: ["Scheduled pickup and drop-off", "Guaranteed time-slot delivery", "Ideal for coordinated logistics", "Medical supplies, installation teams, event deliveries"],
+      description:
+        "When your delivery has a deadline - we make it happen. Ideal when your package must arrive at a specific time.",
+      features: [
+        "Scheduled pickup and drop-off",
+        "Guaranteed time-slot delivery",
+        "Ideal for coordinated logistics",
+        "Medical supplies, installation teams, event deliveries",
+      ],
     },
     {
       icon: Truck,
-      title: "Light Haulage & Specialist Deliveries",
-      description: "Oversized, palletised, or high-value goods — handled with care. Wide range of vehicle options and professional handling.",
-      features: ["Motorcycle to Luton Van options", "Tail-lift access (where required)", "Goods in Transit insurance", "Fragile equipment or household goods"],
+      title: "  Specialist Deliveries",
+      description:
+        "Oversized, palletised, or high-value goods — handled with care. Wide range of vehicle options and professional handling.",
+      features: [
+        "Motorcycle to Luton Van options",
+        "Tail-lift access (where required)",
+        "Goods in Transit insurance",
+        "Fragile equipment or household goods",
+      ],
     },
   ];
 
@@ -28,19 +52,23 @@ const Services = () => {
     <section className="py-20 bg-background">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6" id="services">
+          <h2
+            className="text-4xl md:text-5xl font-bold text-foreground mb-6"
+            id="services"
+          >
             Our Services
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed">
-            We're proud to offer a nationwide same-day courier service. Thanks to our extensive network of drivers, 
-            we can guarantee a collection anywhere in the UK within 60 minutes of your booking.
+            We're proud to offer a nationwide same-day courier service. Thanks
+            to our extensive network of drivers, we can guarantee a collection
+            anywhere in the UK within 60 minutes of your booking.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {services.map((service, index) => (
-            <Card 
-              key={index} 
+            <Card
+              key={index}
               className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-logistics-orange/20"
             >
               <CardHeader className="text-center pb-4">
@@ -57,15 +85,18 @@ const Services = () => {
                 </CardDescription>
                 <ul className="space-y-2">
                   {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-sm text-foreground">
+                    <li
+                      key={featureIndex}
+                      className="flex items-center text-sm text-foreground"
+                    >
                       <div className="w-2 h-2 bg-logistics-orange rounded-full mr-3 flex-shrink-0" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-                <Button 
+                <Button
                   className="w-full mt-6 bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold transition-all duration-300"
-                  onClick={() => window.location.href = '/booking'}
+                  onClick={() => (window.location.href = "/booking")}
                 >
                   Get a Quote
                 </Button>
@@ -84,13 +115,13 @@ const Services = () => {
               Available 24/7, 365 Days
             </h3>
             <p className="text-xl text-white/90 mb-8 leading-relaxed">
-              Our services never stop. Whether it's midnight, weekend, or bank holiday - 
-              we're here to deliver when you need us most.
+              Our services never stop. Whether it's midnight, weekend, or bank
+              holiday - we're here to deliver when you need us most.
             </p>
-            <Button 
+            <Button
               size="lg"
               className="bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-              onClick={() => window.location.href = '/contact'}
+              onClick={() => (window.location.href = "/contact")}
             >
               Request Call Back
             </Button>

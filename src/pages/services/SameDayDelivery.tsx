@@ -47,13 +47,15 @@ const SameDayDelivery = () => {
               >
                 Get Instant Quote
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
-              >
-                Call Now: 0800 123 4567
-              </Button>
+               <a href="tel:+447352288232">
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                >
+                  Speak to expert
+                </Button>
+              </a>
             </div>
           </div>
         </div>
@@ -249,13 +251,16 @@ const SameDayDelivery = () => {
               >
                 Get Your Quote Now
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
-              >
-                Call Emergency Line
-              </Button>
+              <a href="tel:+447352288232">
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
+                >
+                  Speak to expert
+                </Button>
+              </a>
+
             </div>
           </div>
         </div>
