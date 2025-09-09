@@ -275,7 +275,7 @@ const Footer = () => {
             </div>
             <div className="flex space-x-6 text-sm text-white/60">
               <a
-                href="/privacy"
+                href="/privacy-policy"
                 className="hover:text-logistics-orange transition-colors duration-200"
               >
                 Privacy Policy
