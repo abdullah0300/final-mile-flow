@@ -26,7 +26,7 @@ import FAQ from "./pages/FAQ";
 import Profile from "./pages/Profile";
 import BookingSuccess from "./pages/BookingSuccess";
 import BookingCancelled from "./pages/BookingCancelled";
-import PrivacyPolicy from "./pages/privacy-policy";
+import PrivacyPolicy from "./pages/privacypolicy";
 import TermsOfService from "./pages/TermsOfService";
 import CookiePolicy from "./pages/CookiePolicy";
 
