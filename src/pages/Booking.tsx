@@ -555,7 +555,7 @@ const Booking = () => {
                     this card booking facility is for Same-day services only. If
                     you require specialist courier services including multi-drop
                     please call
-                    <strong> +44 7539868853</strong> or contact us at{" "}
+                    <strong> 01332 492501</strong> or contact us at{" "}
                     <strong> info@fleetory.co.uk</strong>
                   </p>
                 </div>
@@ -934,6 +934,27 @@ const Booking = () => {
                   )}
 
                   <div className="flex gap-4">
+                     <Button
+                      type="submit"
+                      disabled={isSubmitting || !watch("acceptTerms")}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSubmit((data) => onSubmit(data, "pay-now"))();
+                      }}
+                      className="flex-1 bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <CreditCard className="mr-2 h-5 w-5" />
+                          Pay Now
+                        </>
+                      )}
+                    </Button>
                     <Button
                       type="submit"
                       disabled={isSubmitting || !watch("acceptTerms")}
@@ -955,39 +976,18 @@ const Booking = () => {
                         </>
                       )}
                     </Button>
-
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting || !watch("acceptTerms")}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleSubmit((data) => onSubmit(data, "pay-now"))();
-                      }}
-                      className="flex-1 bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Processing...
-                        </>
-                      ) : (
-                        <>
-                          <CreditCard className="mr-2 h-5 w-5" />
-                          Pay Now
-                        </>
-                      )}
-                    </Button>
                   </div>
 
                   <div className="mt-4 text-center text-sm text-muted-foreground">
                     <p>
-                      <strong>Book Now:</strong> Reserve your booking and pay
-                      the driver on collection
-                    </p>
-                    <p>
                       <strong>Pay Now:</strong> Secure your booking with
                       immediate card payment
                     </p>
+                    <p>
+                      <strong>Book Now:</strong> Reserve your booking and pay
+                      the driver on collection
+                    </p>
+                    
                   </div>
                 </form>
               </div>
@@ -1001,12 +1001,14 @@ const Booking = () => {
                       <MapPin className="w-4 h-4" />
                       <h3 className="font-semibold">Route Preview</h3>
                     </div>
-                    <RouteMap
-                      pickup={pickupCoords}
-                      delivery={deliveryCoords}
-                      className="h-48"
-                      key={`${pickupCoords?.lat}-${pickupCoords?.lng}-${deliveryCoords?.lat}-${deliveryCoords?.lng}`}
-                    />
+                    <div className="w-full h-48 rounded-md overflow-hidden">
+                      <RouteMap
+                        pickup={pickupCoords}
+                        delivery={deliveryCoords}
+                        className="h-full w-full"
+                        key={`${pickupCoords?.lat}-${pickupCoords?.lng}-${deliveryCoords?.lat}-${deliveryCoords?.lng}`}
+                      />
+                    </div>
                     {/* Debug info */}
                     {process.env.NODE_ENV === "development" && (
                       <div className="text-xs text-muted-foreground mt-2">
@@ -1149,7 +1151,7 @@ const Booking = () => {
                       <p>
                         Please note this card booking facility is for Same Day
                         services only, if you require specialist courier
-                        services including multi-drop please call 0800 123 4567,
+                        services including multi-drop please call 01332 492501,
                         or contact us at{" "}
                         <a
                           href="mailto: info@fleetory.co.uk"

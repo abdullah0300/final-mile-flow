@@ -48,8 +48,8 @@ const Healthcare = () => {
               >
                 Get Medical Courier Quote
               </Button>
-               <a href="tel:+447352288232">
-                <Button 
+              <a href="tel:01332492501">
+                <Button
                   size="lg"
                   variant="outline"
                   className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"
@@ -332,8 +332,8 @@ const Healthcare = () => {
               >
                 Get Medical Quote
               </Button>
-               <a href="tel:+447352288232">
-                <Button 
+              <a href="tel:01332492501">
+                <Button
                   size="lg"
                   variant="outline"
                   className="border-white text-black hover:bg-white hover:text-logistics-blue font-semibold px-8 py-4 text-lg"

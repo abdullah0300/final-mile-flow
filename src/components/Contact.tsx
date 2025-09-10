@@ -216,6 +216,9 @@ const Contact = () => {
                       <div>
                         <a href="tel:+447352288232">+44 7352288232</a>
                       </div>
+                      <div>
+                        <a href="tel:01332492501">01332 492501</a>
+                      </div>
 
                       <div className="text-sm text-logistics-orange font-medium">
                         Emergency: <a href="tel:+447539868853" className="text-logistics-orange">+44 7539868853</a>
