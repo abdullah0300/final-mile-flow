@@ -337,7 +337,8 @@ const TermsOfService = () => {
                 <div className="space-y-2 text-gray-700">
                   <p><strong>Fleetory Ltd (16600045)</strong></p>
                   <p>3 Glebe Rise, Littleover, Derby, DE23 6GX, UK</p>
-                  <p><strong>Contact Number:</strong> <a href="tel:07539868853" className="text-logistics-blue hover:underline">07539868853</a></p>
+                  <p><strong>Telephone number:</strong> <a href="tel:01332492501" className="text-logistics-blue hover:underline">01332 492501</a></p>
+                  <p><strong>Out of hours Mobile Number:</strong> <a href="tel:07539868853" className="text-logistics-blue hover:underline">07539868853</a></p>
                   <p><strong>Email:</strong> <a href="mailto:info@fleetory.co.uk" className="text-logistics-blue hover:underline">info@fleetory.co.uk</a></p>
                 </div>
               </div>
