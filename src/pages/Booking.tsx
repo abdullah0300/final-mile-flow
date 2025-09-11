@@ -988,8 +988,6 @@ const Booking = () => {
 <div className="mt-4 text-center text-sm text-muted-foreground">
   {user ? (
     <>
-      <p><strong>Book Now:</strong> Reserve your booking and pay the driver on collection</p>
-      <p><strong>Pay Now:</strong> Secure your booking with immediate card payment</p>
     </>
   ) : (
     <p className="text-amber-600">
