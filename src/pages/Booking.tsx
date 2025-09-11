@@ -993,23 +993,22 @@ const Booking = () => {
     </>
   ) : (
     <p className="text-amber-600">
+    </p>
+  )}
+</div>
+<div className="mt-4 text-center text-sm text-muted-foreground">
+  {user ? (
+    <>
+      <p><strong>Book Now:</strong> Reserve your booking and pay the driver on collection</p>
+      <p><strong>Pay Now:</strong> Secure your booking with immediate card payment</p>
+    </>
+  ) : (
+    <p className="text-amber-600">
       <strong>Guest Checkout:</strong> Payment required at time of booking. 
       <a href="/auth" className="text-logistics-blue underline ml-1">Sign in</a> for more payment options.
     </p>
   )}
 </div>
-
-                  <div className="mt-4 text-center text-sm text-muted-foreground">
-                    <p>
-                      <strong>Pay Now:</strong> Secure your booking with
-                      immediate card payment
-                    </p>
-                    <p>
-                      <strong>Book Now:</strong> Reserve your booking and pay
-                      the driver on collection
-                    </p>
-                    
-                  </div>
                 </form>
               </div>
 
