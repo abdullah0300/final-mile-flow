@@ -1064,79 +1064,83 @@ const Booking = () => {
                     </p>
                   )}
 
-                  <div className="flex gap-4">
-                    {/* Only show Book Now button if user is logged in */}
-                    {user && (
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting || !watch("acceptTerms")}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleSubmit((data) => onSubmit(data, "book-now"))();
-                        }}
-                        className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 text-lg"
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Processing...
-                          </>
-                        ) : (
-                          <>
-                            <CheckCircle className="mr-2 h-5 w-5" />
-                            Book Now
-                          </>
-                        )}
-                      </Button>
-                    )}
+                  {/* Buttons only visible on desktop */}
+<div className="hidden md:flex gap-4">
+  <Button
+    type="submit"
+    disabled={isSubmitting || !watch("acceptTerms")}
+    onClick={(e) => {
+      e.preventDefault();
+      handleSubmit((data) => onSubmit(data, "pay-now"))();
+    }}
+    className={cn(
+      "bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg",
+      user ? "flex-1" : "w-full"
+    )}
+  >
+    {isSubmitting ? (
+      <>
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        Processing...
+      </>
+    ) : (
+      <>
+        <CreditCard className="mr-2 h-5 w-5" />
+        Pay Now
+      </>
+    )}
+  </Button>
 
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting || !watch("acceptTerms")}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleSubmit((data) => onSubmit(data, "pay-now"))();
-                      }}
-                      className={cn(
-                        "bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg",
-                        user ? "flex-1" : "w-full"
-                      )}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Processing...
-                        </>
-                      ) : (
-                        <>
-                          <CreditCard className="mr-2 h-5 w-5" />
-                          Pay Now
-                        </>
-                      )}
-                    </Button>
-                  </div>
+  {/* Only show Book Now button if user is logged in */}
+  {user && (
+    <Button
+      type="submit"
+      disabled={isSubmitting || !watch("acceptTerms")}
+      onClick={(e) => {
+        e.preventDefault();
+        handleSubmit((data) => onSubmit(data, "book-now"))();
+      }}
+      className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 text-lg"
+    >
+      {isSubmitting ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Processing...
+        </>
+      ) : (
+        <>
+          <CheckCircle className="mr-2 h-5 w-5" />
+          Book Now
+        </>
+      )}
+    </Button>
+  )}
+</div>
 
-                  <div className="mt-4 text-center text-sm text-muted-foreground">
-                    {user ? (
-                      <>
-                        <p>
-                          <strong>Book Now:</strong> Reserve your booking and pay the driver on
-                          collection
-                        </p>
-                        <p>
-                          <strong>Pay Now:</strong> Secure your booking with immediate card payment
-                        </p>
-                      </>
-                    ) : (
-                      <p className="text-amber-600">
-                        <strong>Guest Checkout:</strong> Payment required at time of booking.{" "}
-                        <a href="/auth" className="text-logistics-blue underline ml-1">
-                          Sign in
-                        </a>{" "}
-                        for more payment options.
-                      </p>
-                    )}
-                  </div>
+{/* Info text - only visible on big screens */}
+<div className="mt-4 text-left text-sm text-muted-foreground hidden md:block">
+  {user ? (
+    <>
+      <p>
+        <strong>Pay Now: </strong> Secure your booking with immediate card payment.
+      </p>
+      <p>
+        <strong>Book Now:</strong> Reserve your booking today. You’ll receive an
+        invoice and can pay within the agreed terms.
+      </p>
+    </>
+  ) : (
+    <p className="text-amber-600">
+      <strong>Guest Checkout:</strong> Payment required at time of booking.{" "}
+      <a href="/auth" className="text-logistics-blue underline ml-1">
+        Sign in
+      </a>{" "}
+      for more payment options.
+    </p>
+  )}
+</div>
+
+
                 </form>
               </div>
 
@@ -1249,18 +1253,95 @@ const Booking = () => {
                     {/* Proceed Button */}
                     {pricing.total > 0 && (
                       <Button
-  className="hidden lg:block w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 mt-4"
-  onClick={() => {
-    // Scroll to form submission
-    document
-      .querySelector('button[type="submit"]')
-      ?.scrollIntoView({ behavior: "smooth" });
-  }}
->
-  Proceed to payment
-</Button>
+                      className="hidden lg:block w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 mt-4"
+                      onClick={() => {
+                        // Scroll to form submission
+                        document
+                          .querySelector('button[type="submit"]')
+                          ?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                    >
+                      Proceed to payment
+                    </Button>
 
                     )}
+                   {/* Buttons only visible on mobile */}
+<div className="flex md:hidden gap-4">
+  <Button
+    type="submit"
+    disabled={isSubmitting || !watch("acceptTerms")}
+    onClick={(e) => {
+      e.preventDefault();
+      handleSubmit((data) => onSubmit(data, "pay-now"))();
+    }}
+    className={cn(
+      "bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg",
+      user ? "flex-1" : "w-full"
+    )}
+  >
+    {isSubmitting ? (
+      <>
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        Processing...
+      </>
+    ) : (
+      <>
+        <CreditCard className="mr-2 h-5 w-5" />
+        Pay Now
+      </>
+    )}
+  </Button>
+
+  {/* Only show Book Now button if user is logged in */}
+  {user && (
+    <Button
+      type="submit"
+      disabled={isSubmitting || !watch("acceptTerms")}
+      onClick={(e) => {
+        e.preventDefault();
+        handleSubmit((data) => onSubmit(data, "book-now"))();
+      }}
+      className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 text-lg"
+    >
+      {isSubmitting ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Processing...
+        </>
+      ) : (
+        <>
+          <CheckCircle className="mr-2 h-5 w-5" />
+          Book Now
+        </>
+      )}
+    </Button>
+  )}
+</div>
+
+{/* Info text - only visible on mobile */}
+<div className="mt-4 text-left text-sm text-muted-foreground block md:hidden">
+  {user ? (
+    <>
+      <p>
+        <strong>Pay Now: </strong> Secure your booking with immediate card payment.
+      </p>
+      <p>
+        <strong>Book Now:</strong> Reserve your booking today. You’ll receive an
+        invoice and can pay within the agreed terms.
+      </p>
+    </>
+  ) : (
+    <p className="text-amber-600">
+      <strong>Guest Checkout:</strong> Payment required at time of booking.{" "}
+      <a href="/auth" className="text-logistics-blue underline ml-1">
+        Sign in
+      </a>{" "}
+      for more payment options.
+    </p>
+  )}
+</div>
+
+
                   </CardContent>
                 </Card>
 
