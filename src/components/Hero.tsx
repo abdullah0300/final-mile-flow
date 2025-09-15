@@ -4,7 +4,7 @@ import heroImage from "@/assets/hero-logistics.jpg";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center mt-16 md:mt-18 justify-center bg-gradient-to-br from-logistics-blue to-logistics-blue-light overflow-hidden">
+    <section className="relative min-h-screen flex items-center mt-12 md:mt-18 justify-center bg-gradient-to-br from-logistics-blue to-logistics-blue-light overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <img
@@ -65,13 +65,12 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator - only visible on big screens */}
-<div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden md:block">
-  <div className="w-5 h-8 md:w-6 md:h-10 border-2 border-white/50 rounded-full flex justify-center">
-    <div className="w-0.5 md:w-1 h-2 md:h-3 bg-white/50 rounded-full mt-1.5 md:mt-2"></div>
-  </div>
-</div>
-
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-5 h-8 md:w-6 md:h-10 border-2 border-white/50 rounded-full flex justify-center">
+          <div className="w-0.5 md:w-1 h-2 md:h-3 bg-white/50 rounded-full mt-1.5 md:mt-2"></div>
+        </div>
+      </div>
     </section>
   );
 };
