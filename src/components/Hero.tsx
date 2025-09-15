@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Truck, Clock, MapPin } from "lucide-react";
 import heroImage from "@/assets/hero-logistics.jpg";
-
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center mt-12 md:mt-18 justify-center bg-gradient-to-br from-logistics-blue to-logistics-blue-light overflow-hidden">
+    <section className="relative min-h-screen flex items-center mt-8 md:mt-18 justify-center bg-gradient-to-br from-logistics-blue to-logistics-blue-light overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <img
