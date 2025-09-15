@@ -74,14 +74,14 @@ const { user } = useAuth();
                   Timed Delivery
                 </a>
               </li>
-              {/* <li>
+              <li>
                 <a
                   href="/services/light-haulage"
                   className="hover:text-logistics-orange transition-colors duration-200"
                 >
                   Light Haulage
                 </a>
-              </li> */}
+              </li>
               <li>
                 <a
                   href="/fleet"
@@ -233,26 +233,27 @@ const { user } = useAuth();
 
               <div className="space-y-2">
                 <a
-                  href="tel:+447539868853"
-                  className="flex items-center space-x-3 text-white/80 hover:text-logistics-orange transition-colors duration-200"
-                >
-                  <Phone className="h-4 w-4 text-logistics-orange flex-shrink-0" />
-                  <span>+44 7539 868853</span>
-                </a>
-                <a
-                  href="tel:+447352288232"
-                  className="flex items-center space-x-3 text-white/80 hover:text-logistics-orange transition-colors duration-200"
-                >
-                  <Phone className="h-4 w-4 text-logistics-orange flex-shrink-0" />
-                  <span>+44 7352 288232</span>
-                </a>
-                <a
                   href="tel:01332492501"
                   className="flex items-center space-x-3 text-white/80 hover:text-logistics-orange transition-colors duration-200"
                 >
                   <Phone className="h-4 w-4 text-logistics-orange flex-shrink-0" />
                   <span>01332 492501</span>
                 </a>
+                <a
+                  href="tel:+447539868853"
+                  className="flex items-center space-x-3 text-white/80 hover:text-logistics-orange transition-colors duration-200"
+                >
+                  <Phone className="h-4 w-4 text-logistics-orange flex-shrink-0" />
+                  <span>+44 7539 868853</span>
+                </a>
+                {/* <a
+                  href="tel:+447352288232"
+                  className="flex items-center space-x-3 text-white/80 hover:text-logistics-orange transition-colors duration-200"
+                >
+                  <Phone className="h-4 w-4 text-logistics-orange flex-shrink-0" />
+                  <span>+44 7352 288232</span>
+                </a> */}
+                
               </div>
 
               <a

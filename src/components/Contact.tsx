@@ -211,12 +211,13 @@ const Contact = () => {
                     </h3>
                     <div className="text-muted-foreground space-y-1">
                       <div>
+                        <a href="tel:01332492501">01332 492501</a>
+                      </div>
+                      <div>
                         <a href="tel:+447539868853">+44 7539868853</a>
                       </div>
                      
-                      <div>
-                        <a href="tel:01332492501">01332 492501</a>
-                      </div>
+                      
 
                       <div className="text-sm text-logistics-orange font-medium">
                         Emergency: <a href="tel:+447539868853" className="text-logistics-orange">+44 7539868853</a>
@@ -245,7 +246,7 @@ const Contact = () => {
                   </div>
                 </div>
               </Card>
-<a
+                      <a
                       href="https://wa.me/447352288232"
                       target="_blank"
                       rel="noopener noreferrer"
