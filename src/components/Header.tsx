@@ -197,7 +197,7 @@ const Header = () => {
                         <span className="text-sm font-medium text-gray-700">My Profile</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem 
-                        onClick={() => navigate('/quotations')}
+                        onClick={() => navigate('/booking')}
                         className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-50 cursor-pointer"
                       >
                         <FileText className="w-4 h-4 text-gray-600" />

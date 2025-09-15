@@ -33,6 +33,8 @@ import {
   User,
   UserPlus,
   CreditCard,
+  Clock,
+  AlertCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -49,6 +51,9 @@ import AccountRequestForm from "@/components/AccountRequestForm";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
 
 const bookingSchema = z.object({
   collectFrom: z.string().min(10, "Please enter a complete collection address"),
@@ -77,9 +82,21 @@ const bookingSchema = z.object({
   acceptTerms: z.boolean().refine((val) => val === true, {
     message: "You must accept the terms and conditions",
   }),
+  acceptDisclaimer: z.boolean().refine((val) => val === true, {
+    message: "You must acknowledge the disclaimer",
+  }),
+  pickupDate: z.date().optional(),
+  pickupTime: z.string().optional(),
+  deliveryDate: z.date().optional(),
+  deliveryTime: z.string().optional(),
 });
 
 type BookingFormData = z.infer<typeof bookingSchema>;
+
+const timeSlots = [
+  "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00",
+  "15:00", "16:00", "17:00", "18:00", "19:00", "20:00",
+];
 
 const Booking = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -205,6 +222,7 @@ const Booking = () => {
     resolver: zodResolver(bookingSchema),
     defaultValues: {
       acceptTerms: false,
+      acceptDisclaimer: false,
     },
   });
 
@@ -224,6 +242,8 @@ const Booking = () => {
   const watchedVehicleType = watch("vehicleType");
   const watchedService = watch("serviceType");
   const watchedDescription = watch("description");
+  const watchedPickupDate = watch("pickupDate");
+  const watchedDeliveryDate = watch("deliveryDate");
 
   // Get selected vehicle details
   const selectedVehicle = vehicles.find((v) => v.name === watchedVehicleType);
@@ -323,6 +343,10 @@ const Booking = () => {
           delivery_contact: data.deliveryContact,
           pricing: pricing,
           payment_status: paymentType === "pay-now" ? "pending" : "unpaid",
+          pickup_date: data.pickupDate ? format(data.pickupDate, "yyyy-MM-dd") : null,
+          pickup_time: data.pickupTime,
+          delivery_date: data.deliveryDate ? format(data.deliveryDate, "yyyy-MM-dd") : null,
+          delivery_time: data.deliveryTime,
         },
       ]);
 
@@ -344,6 +368,10 @@ const Booking = () => {
           bookingType: bookingMode,
           paymentStatus:
             paymentType === "pay-now" ? "pending_payment" : "unpaid",
+          pickupDate: data.pickupDate ? format(data.pickupDate, "yyyy-MM-dd") : null,
+          pickupTime: data.pickupTime,
+          deliveryDate: data.deliveryDate ? format(data.deliveryDate, "yyyy-MM-dd") : null,
+          deliveryTime: data.deliveryTime,
         },
       });
 
@@ -541,22 +569,21 @@ const Booking = () => {
               </div>
 
               <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                {bookingMode === "guest" ? "Guest Booking" : "Quick Quote"}
+                {user ? "Book Your Courier" : bookingMode === "guest" ? "Guest Booking" : "Quick Quote"}
               </h1>
 
-              {bookingMode === "guest" && (
+              {/* Only show guest notice if no user is logged in */}
+              {!user && bookingMode === "guest" && (
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-3xl mx-auto mb-6">
                   <p className="text-blue-800 text-sm">
-                    <strong>Guest Booking Notice:</strong> As a 'Guest' you can
-                    get a quote for Same-day services and make a card booking by
-                    credit or debit card. You will need to have your package
-                    collection and delivery details ready and a valid credit or
-                    debit card number to make a Same-day booking. Please note
-                    this card booking facility is for Same-day services only. If
-                    you require specialist courier services including multi-drop
-                    please call
-                    <strong> 01332 492501</strong> or contact us at{" "}
-                    <strong> info@fleetory.co.uk</strong>
+                    <strong>Guest Booking Notice:</strong> As a 'Guest' you can get a quote
+                    for Same-day services and make a card booking by credit or debit card.
+                    You will need to have your package collection and delivery details ready
+                    and a valid credit or debit card number to make a Same-day booking.
+                    Please note this card booking facility is for Same-day services only.
+                    If you require specialist courier services including multi-drop please
+                    call <strong>01332 492501</strong> or contact us at{" "}
+                    <strong>info@fleetory.co.uk</strong>
                   </p>
                 </div>
               )}
@@ -623,6 +650,109 @@ const Booking = () => {
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Info className="w-4 h-4" />
                       Need more stops? Contact us at info@fleetory.co.uk
+                    </div>
+                  </div>
+
+                  {/* Schedule Card */}
+                  <div className="space-y-4">
+                    <Label className="text-lg font-semibold text-foreground">
+                      When do you need this?
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      Select your preferred collection and delivery times
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        <Label className="text-sm font-medium">Collection Date & Time</Label>
+                        <div className="grid grid-cols-2 gap-3">
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "justify-start text-left font-normal h-11",
+                                  !watchedPickupDate && "text-muted-foreground",
+                                  errors.pickupDate && "border-destructive"
+                                )}
+                              >
+                                {watchedPickupDate ? format(watchedPickupDate, "dd/MM/yyyy") : "Select date"}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                              <Calendar
+                                mode="single"
+                                selected={watchedPickupDate}
+                                onSelect={(date) => setValue("pickupDate", date!)}
+                                disabled={(date) => date < new Date()}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          
+                          <Select onValueChange={(value) => setValue("pickupTime", value)}>
+                            <SelectTrigger className={cn("h-11", errors.pickupTime && "border-destructive")}>
+                              <SelectValue placeholder="Select time" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {timeSlots.map((slot) => (
+                                <SelectItem key={slot} value={slot}>{slot}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        {(errors.pickupDate || errors.pickupTime) && (
+                          <p className="text-xs text-destructive flex items-center gap-1">
+                            <AlertCircle className="w-3 h-3" />
+                            {errors.pickupDate?.message || errors.pickupTime?.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-3">
+                        <Label className="text-sm font-medium">Delivery Date & Time</Label>
+                        <div className="grid grid-cols-2 gap-3">
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "justify-start text-left font-normal h-11",
+                                  !watchedDeliveryDate && "text-muted-foreground",
+                                  errors.deliveryDate && "border-destructive"
+                                )}
+                              >
+                                {watchedDeliveryDate ? format(watchedDeliveryDate, "dd/MM/yyyy") : "Select date"}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                              <Calendar
+                                mode="single"
+                                selected={watchedDeliveryDate}
+                                onSelect={(date) => setValue("deliveryDate", date!)}
+                                disabled={(date) => date < new Date()}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          
+                          <Select onValueChange={(value) => setValue("deliveryTime", value)}>
+                            <SelectTrigger className={cn("h-11", errors.deliveryTime && "border-destructive")}>
+                              <SelectValue placeholder="Select time" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {timeSlots.map((slot) => (
+                                <SelectItem key={slot} value={slot}>{slot}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        {(errors.deliveryDate || errors.deliveryTime) && (
+                          <p className="text-xs text-destructive flex items-center gap-1">
+                            <AlertCircle className="w-3 h-3" />
+                            {errors.deliveryDate?.message || errors.deliveryTime?.message}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -902,9 +1032,7 @@ const Booking = () => {
                     <Checkbox
                       id="acceptTerms"
                       checked={watch("acceptTerms")}
-                      onCheckedChange={(checked) =>
-                        setValue("acceptTerms", !!checked)
-                      }
+                      onCheckedChange={(checked) => setValue("acceptTerms", !!checked)}
                       className={cn(errors.acceptTerms && "border-destructive")}
                     />
                     <Label
@@ -920,7 +1048,7 @@ const Booking = () => {
                       </a>{" "}
                       and{" "}
                       <a
-                        href="/privacy"
+                        href="/privacypolicy"
                         className="text-logistics-blue underline"
                       >
                         Privacy Policy
@@ -933,80 +1061,104 @@ const Booking = () => {
                     </p>
                   )}
 
-                  <div className="flex gap-4">
-  {/* Only show Book Now button if user is logged in */}
-  {user && (
-    <Button
-      type="submit"
-      disabled={isSubmitting || !watch("acceptTerms")}
-      onClick={(e) => {
-        e.preventDefault();
-        handleSubmit((data) => onSubmit(data, 'book-now'))();
-      }}
-      className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 text-lg"
-    >
-      {isSubmitting ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Processing...
-        </>
-      ) : (
-        <>
-          <CheckCircle className="mr-2 h-5 w-5" />
-          Book Now
-        </>
-      )}
-    </Button>
-  )}
-  
-  <Button
-    type="submit"
-    disabled={isSubmitting || !watch("acceptTerms")}
-    onClick={(e) => {
-      e.preventDefault();
-      handleSubmit((data) => onSubmit(data, 'pay-now'))();
-    }}
-    className={cn(
-      "bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg",
-      user ? "flex-1" : "w-full"
-    )}
-  >
-    {isSubmitting ? (
-      <>
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        Processing...
-      </>
-    ) : (
-      <>
-        <CreditCard className="mr-2 h-5 w-5" />
-        Pay Now
-      </>
-    )}
-  </Button>
-</div>
+                  {/* Disclaimer */}
+                  <div className="flex items-start space-x-2 mt-4">
+                    <Checkbox
+                      id="acceptDisclaimer"
+                      checked={watch("acceptDisclaimer")}
+                      onCheckedChange={(checked) => setValue("acceptDisclaimer", !!checked)}
+                      className={cn(errors.acceptDisclaimer && "border-destructive")}
+                    />
+                    <Label
+                      htmlFor="acceptDisclaimer"
+                      className="text-sm leading-relaxed"
+                    >
+                      Disclaimer: Please be aware that the price for your booking does not
+                      include any potential <strong>tolls, ferry costs, or congestion zone charges</strong>.
+                      If your journey incurs any of these charges, they will be added to your
+                      final invoice. You will be notified of any additional costs after your
+                      booking is confirmed.
+                    </Label>
+                  </div>
+                  {errors.acceptDisclaimer && (
+                    <p className="text-sm text-destructive">
+                      {errors.acceptDisclaimer.message}
+                    </p>
+                  )}
 
-<div className="mt-4 text-center text-sm text-muted-foreground">
-  {user ? (
-    <>
-    </>
-  ) : (
-    <p className="text-amber-600">
-    </p>
-  )}
-</div>
-<div className="mt-4 text-center text-sm text-muted-foreground">
-  {user ? (
-    <>
-      <p><strong>Book Now:</strong> Reserve your booking and pay the driver on collection</p>
-      <p><strong>Pay Now:</strong> Secure your booking with immediate card payment</p>
-    </>
-  ) : (
-    <p className="text-amber-600">
-      <strong>Guest Checkout:</strong> Payment required at time of booking. 
-      <a href="/auth" className="text-logistics-blue underline ml-1">Sign in</a> for more payment options.
-    </p>
-  )}
-</div>
+                  <div className="flex gap-4">
+                    {/* Only show Book Now button if user is logged in */}
+                    {user && (
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting || !watch("acceptTerms")}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSubmit((data) => onSubmit(data, "book-now"))();
+                        }}
+                        className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 text-lg"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle className="mr-2 h-5 w-5" />
+                            Book Now
+                          </>
+                        )}
+                      </Button>
+                    )}
+
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting || !watch("acceptTerms")}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSubmit((data) => onSubmit(data, "pay-now"))();
+                      }}
+                      className={cn(
+                        "bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg",
+                        user ? "flex-1" : "w-full"
+                      )}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <CreditCard className="mr-2 h-5 w-5" />
+                          Pay Now
+                        </>
+                      )}
+                    </Button>
+                  </div>
+
+                  <div className="mt-4 text-center text-sm text-muted-foreground">
+                    {user ? (
+                      <>
+                        <p>
+                          <strong>Book Now:</strong> Reserve your booking and pay the driver on
+                          collection
+                        </p>
+                        <p>
+                          <strong>Pay Now:</strong> Secure your booking with immediate card payment
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-amber-600">
+                        <strong>Guest Checkout:</strong> Payment required at time of booking.{" "}
+                        <a href="/auth" className="text-logistics-blue underline ml-1">
+                          Sign in
+                        </a>{" "}
+                        for more payment options.
+                      </p>
+                    )}
+                  </div>
                 </form>
               </div>
 
@@ -1072,9 +1224,7 @@ const Booking = () => {
                         <Label className="text-sm font-medium text-muted-foreground">
                           Collect from address
                         </Label>
-                        <p className="text-sm font-medium">
-                          {watchedCollectFrom}
-                        </p>
+                        <p className="text-sm font-medium">{watchedCollectFrom}</p>
                       </div>
                     )}
 
@@ -1084,9 +1234,7 @@ const Booking = () => {
                         <Label className="text-sm font-medium text-muted-foreground">
                           Deliver to address
                         </Label>
-                        <p className="text-sm font-medium">
-                          {watchedDeliverTo}
-                        </p>
+                        <p className="text-sm font-medium">{watchedDeliverTo}</p>
                       </div>
                     )}
 
@@ -1101,31 +1249,21 @@ const Booking = () => {
                     {/* Price breakdown */}
                     <div className="space-y-3 border-t pt-4">
                       <div className="flex justify-between">
+                        <span className="text-sm font-medium">Price (exc. VAT)</span>
                         <span className="text-sm font-medium">
-                          Price (exc. VAT)
-                        </span>
-                        <span className="text-sm font-medium">
-                          {pricing.price > 0
-                            ? `£${pricing.price.toFixed(2)}`
-                            : "£0.00"}
+                          {pricing.price > 0 ? `£${pricing.price.toFixed(2)}` : "£0.00"}
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm font-medium">VAT</span>
                         <span className="text-sm font-medium">
-                          {pricing.vat > 0
-                            ? `£${pricing.vat.toFixed(2)}`
-                            : "£0.00"}
+                          {pricing.vat > 0 ? `£${pricing.vat.toFixed(2)}` : "£0.00"}
                         </span>
                       </div>
                       <div className="border-t pt-3">
                         <div className="flex justify-between text-lg font-bold">
                           <span>Total Price</span>
-                          <span>
-                            {pricing.total > 0
-                              ? `£${pricing.total.toFixed(2)}`
-                              : "£0.00"}
-                          </span>
+                          <span>{pricing.total > 0 ? `£${pricing.total.toFixed(2)}` : "£0.00"}</span>
                         </div>
                       </div>
                     </div>
@@ -1150,31 +1288,22 @@ const Booking = () => {
                 {/* Info */}
                 <Card>
                   <CardContent className="p-6">
-                    <h3 className="font-bold text-lg mb-4">
-                      Book Same Day by Card
-                    </h3>
+                    <h3 className="font-bold text-lg mb-4">Book Same Day by Card</h3>
                     <div className="space-y-3 text-sm text-muted-foreground">
                       <p>
                         As a 'Guest' you can get a quote for{" "}
-                        <span className="font-semibold text-foreground">
-                          Same Day services
-                        </span>{" "}
+                        <span className="font-semibold text-foreground">Same Day services</span>{" "}
                         and make a card booking, by credit or debit card.
                       </p>
                       <p>
-                        You will need to have your package collection and
-                        delivery details ready and a valid credit or debit card
-                        number to make a Same Day booking.
+                        You will need to have your package collection and delivery details ready
+                        and a valid credit or debit card number to make a Same Day booking.
                       </p>
                       <p>
-                        Please note this card booking facility is for Same Day
-                        services only, if you require specialist courier
-                        services including multi-drop please call 01332 492501,
-                        or contact us at{" "}
-                        <a
-                          href="mailto: info@fleetory.co.uk"
-                          className="text-logistics-blue underline"
-                        >
+                        Please note this card booking facility is for Same Day services only,
+                        if you require specialist courier services including multi-drop please
+                        call 01332 492501, or contact us at{" "}
+                        <a href="mailto:info@fleetory.co.uk" className="text-logistics-blue underline">
                           info@fleetory.co.uk
                         </a>
                       </p>
