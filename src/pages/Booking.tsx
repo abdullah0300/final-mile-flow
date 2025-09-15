@@ -33,8 +33,6 @@ import {
   User,
   UserPlus,
   CreditCard,
-  Clock,
-  AlertCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -51,9 +49,6 @@ import AccountRequestForm from "@/components/AccountRequestForm";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
 
 const bookingSchema = z.object({
   collectFrom: z.string().min(10, "Please enter a complete collection address"),
@@ -85,18 +80,13 @@ const bookingSchema = z.object({
   acceptDisclaimer: z.boolean().refine((val) => val === true, {
     message: "You must acknowledge the disclaimer",
   }),
-  pickupDate: z.date().optional(),
-  pickupTime: z.string().optional(),
-  deliveryDate: z.date().optional(),
+  collectionDate: z.string().optional(),
+  collectionTime: z.string().optional(),
+  deliveryDate: z.string().optional(),
   deliveryTime: z.string().optional(),
 });
 
 type BookingFormData = z.infer<typeof bookingSchema>;
-
-const timeSlots = [
-  "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00",
-  "15:00", "16:00", "17:00", "18:00", "19:00", "20:00",
-];
 
 const Booking = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -242,8 +232,6 @@ const Booking = () => {
   const watchedVehicleType = watch("vehicleType");
   const watchedService = watch("serviceType");
   const watchedDescription = watch("description");
-  const watchedPickupDate = watch("pickupDate");
-  const watchedDeliveryDate = watch("deliveryDate");
 
   // Get selected vehicle details
   const selectedVehicle = vehicles.find((v) => v.name === watchedVehicleType);
@@ -343,9 +331,9 @@ const Booking = () => {
           delivery_contact: data.deliveryContact,
           pricing: pricing,
           payment_status: paymentType === "pay-now" ? "pending" : "unpaid",
-          pickup_date: data.pickupDate ? format(data.pickupDate, "yyyy-MM-dd") : null,
-          pickup_time: data.pickupTime,
-          delivery_date: data.deliveryDate ? format(data.deliveryDate, "yyyy-MM-dd") : null,
+          collection_date: data.collectionDate,
+          collection_time: data.collectionTime,
+          delivery_date: data.deliveryDate,
           delivery_time: data.deliveryTime,
         },
       ]);
@@ -368,9 +356,9 @@ const Booking = () => {
           bookingType: bookingMode,
           paymentStatus:
             paymentType === "pay-now" ? "pending_payment" : "unpaid",
-          pickupDate: data.pickupDate ? format(data.pickupDate, "yyyy-MM-dd") : null,
-          pickupTime: data.pickupTime,
-          deliveryDate: data.deliveryDate ? format(data.deliveryDate, "yyyy-MM-dd") : null,
+          collectionDate: data.collectionDate,
+          collectionTime: data.collectionTime,
+          deliveryDate: data.deliveryDate,
           deliveryTime: data.deliveryTime,
         },
       });
@@ -653,108 +641,98 @@ const Booking = () => {
                     </div>
                   </div>
 
-                  {/* Schedule Card */}
-                  <div className="space-y-4">
-                    <Label className="text-lg font-semibold text-foreground">
-                      When do you need this?
-                    </Label>
-                    <p className="text-sm text-muted-foreground">
-                      Select your preferred collection and delivery times
-                    </p>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-3">
-                        <Label className="text-sm font-medium">Collection Date & Time</Label>
-                        <div className="grid grid-cols-2 gap-3">
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "justify-start text-left font-normal h-11",
-                                  !watchedPickupDate && "text-muted-foreground",
-                                  errors.pickupDate && "border-destructive"
-                                )}
-                              >
-                                {watchedPickupDate ? format(watchedPickupDate, "dd/MM/yyyy") : "Select date"}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={watchedPickupDate}
-                                onSelect={(date) => setValue("pickupDate", date!)}
-                                disabled={(date) => date < new Date()}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                          
-                          <Select onValueChange={(value) => setValue("pickupTime", value)}>
-                            <SelectTrigger className={cn("h-11", errors.pickupTime && "border-destructive")}>
-                              <SelectValue placeholder="Select time" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {timeSlots.map((slot) => (
-                                <SelectItem key={slot} value={slot}>{slot}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        {(errors.pickupDate || errors.pickupTime) && (
-                          <p className="text-xs text-destructive flex items-center gap-1">
-                            <AlertCircle className="w-3 h-3" />
-                            {errors.pickupDate?.message || errors.pickupTime?.message}
-                          </p>
-                        )}
-                      </div>
+                  {/* When do you need this? */}
+                 <div className="space-y-4">
+  <Label className="text-lg font-semibold text-foreground">
+    When do you need this?
+  </Label>
+  <p className="text-sm text-muted-foreground">
+    Select your preferred collection and delivery times
+  </p>
 
-                      <div className="space-y-3">
-                        <Label className="text-sm font-medium">Delivery Date & Time</Label>
-                        <div className="grid grid-cols-2 gap-3">
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "justify-start text-left font-normal h-11",
-                                  !watchedDeliveryDate && "text-muted-foreground",
-                                  errors.deliveryDate && "border-destructive"
-                                )}
-                              >
-                                {watchedDeliveryDate ? format(watchedDeliveryDate, "dd/MM/yyyy") : "Select date"}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={watchedDeliveryDate}
-                                onSelect={(date) => setValue("deliveryDate", date!)}
-                                disabled={(date) => date < new Date()}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                          
-                          <Select onValueChange={(value) => setValue("deliveryTime", value)}>
-                            <SelectTrigger className={cn("h-11", errors.deliveryTime && "border-destructive")}>
-                              <SelectValue placeholder="Select time" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {timeSlots.map((slot) => (
-                                <SelectItem key={slot} value={slot}>{slot}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        {(errors.deliveryDate || errors.deliveryTime) && (
-                          <p className="text-xs text-destructive flex items-center gap-1">
-                            <AlertCircle className="w-3 h-3" />
-                            {errors.deliveryDate?.message || errors.deliveryTime?.message}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+  <div className="space-y-6">
+    {/* Collection Row */}
+    <div className="grid md:grid-cols-2 gap-4">
+      <div>
+        <Label className="text-sm font-medium text-foreground">
+          Collection Date
+        </Label>
+        <Input
+          type="date"
+          {...register("collectionDate")}
+          className={cn(
+            "mt-1",
+            errors.collectionDate && "border-destructive"
+          )}
+        />
+        {errors.collectionDate && (
+          <p className="text-sm text-destructive mt-1">
+            {errors.collectionDate.message}
+          </p>
+        )}
+      </div>
+      <div>
+        <Label className="text-sm font-medium text-foreground">
+          Collection Time
+        </Label>
+        <Input
+          type="time"
+          {...register("collectionTime")}
+          className={cn(
+            "mt-1",
+            errors.collectionTime && "border-destructive"
+          )}
+        />
+        {errors.collectionTime && (
+          <p className="text-sm text-destructive mt-1">
+            {errors.collectionTime.message}
+          </p>
+        )}
+      </div>
+    </div>
+
+    {/* Delivery Row */}
+    <div className="grid md:grid-cols-2 gap-4">
+      <div>
+        <Label className="text-sm font-medium text-foreground">
+          Delivery Date
+        </Label>
+        <Input
+          type="date"
+          {...register("deliveryDate")}
+          className={cn(
+            "mt-1",
+            errors.deliveryDate && "border-destructive"
+          )}
+        />
+        {errors.deliveryDate && (
+          <p className="text-sm text-destructive mt-1">
+            {errors.deliveryDate.message}
+          </p>
+        )}
+      </div>
+      <div>
+        <Label className="text-sm font-medium text-foreground">
+          Delivery Time
+        </Label>
+        <Input
+          type="time"
+          {...register("deliveryTime")}
+          className={cn(
+            "mt-1",
+            errors.deliveryTime && "border-destructive"
+          )}
+        />
+        {errors.deliveryTime && (
+          <p className="text-sm text-destructive mt-1">
+            {errors.deliveryTime.message}
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
 
                   {/* Vehicle Type Selection */}
                   <div className="space-y-4">
@@ -1271,16 +1249,17 @@ const Booking = () => {
                     {/* Proceed Button */}
                     {pricing.total > 0 && (
                       <Button
-                        className="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 mt-4"
-                        onClick={() => {
-                          // Scroll to form submission
-                          document
-                            .querySelector('button[type="submit"]')
-                            ?.scrollIntoView({ behavior: "smooth" });
-                        }}
-                      >
-                        Proceed to payment
-                      </Button>
+  className="hidden lg:block w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 mt-4"
+  onClick={() => {
+    // Scroll to form submission
+    document
+      .querySelector('button[type="submit"]')
+      ?.scrollIntoView({ behavior: "smooth" });
+  }}
+>
+  Proceed to payment
+</Button>
+
                     )}
                   </CardContent>
                 </Card>

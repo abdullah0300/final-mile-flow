@@ -10,9 +10,11 @@ import {
   Users,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const Footer = () => {
   const navigate = useNavigate();
+const { user } = useAuth();
 
   return (
     <footer className="bg-logistics-dark text-white">
@@ -188,14 +190,29 @@ const Footer = () => {
                   Get Quote
                 </a>
               </li>
-              <li>
-                <a
-                  href="/auth"
-                  className="hover:text-logistics-orange transition-colors duration-200"
-                >
-                  Sign In
-                </a>
-              </li>
+              {/* Show Sign In only if NOT logged in */}
+      {!user && (
+        <li>
+          <a
+            href="/auth"
+            className="hover:text-logistics-orange transition-colors duration-200"
+          >
+            Sign In
+          </a>
+        </li>
+      )}
+
+      {/* Example: Show Dashboard/Profile when logged in */}
+      {user && (
+        <li>
+          <a
+            href="/profile"
+            className="hover:text-logistics-orange transition-colors duration-200"
+          >
+            Profile
+          </a>
+        </li>
+      )}
             </ul>
           </div>
 
