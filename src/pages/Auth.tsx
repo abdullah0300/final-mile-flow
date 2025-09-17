@@ -23,11 +23,12 @@ const Auth = () => {
     businessName: '',
     phone: ''
   });
+  const [activeTab, setActiveTab] = useState("login");
 
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const from = location.state?.from?.pathname || '/';
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -39,8 +40,9 @@ const Auth = () => {
 
     setLoading(true);
     const { error } = await signIn(loginForm.email, loginForm.password);
-    
+
     if (error) {
+      console.error("Login error:", error);
       toast.error(error.message);
     } else {
       toast.success('Welcome back!');
@@ -51,7 +53,7 @@ const Auth = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!signupForm.email || !signupForm.password || !signupForm.firstName || !signupForm.lastName || !signupForm.phone) {
       toast.error('Please fill in all required fields');
       return;
@@ -68,22 +70,37 @@ const Auth = () => {
     }
 
     setLoading(true);
-    const { error } = await signUp(signupForm.email, signupForm.password, {
+    const { data, error } = await signUp(signupForm.email, signupForm.password, {
       first_name: signupForm.firstName,
       last_name: signupForm.lastName,
       business_name: signupForm.businessName || 'N/A',
       phone: signupForm.phone
     });
-    
+
+    // 🔑 Correct fix: check identities array
+    if (data?.user && data.user.identities?.length === 0) {
+      toast.error("An account with this email already exists. Please sign in instead.");
+      setActiveTab("login");
+      setLoading(false);
+      return;
+    }
+
     if (error) {
-      if (error.message.includes('already registered')) {
+      console.error("Signup error:", error);
+
+      const msg = error.message.toLowerCase();
+      if (msg.includes("already") || msg.includes("duplicate")) {
         toast.error('An account with this email already exists. Please sign in instead.');
+        setActiveTab("login");
+      } else if (msg.includes("password")) {
+        toast.error('Password is too weak. Please choose a stronger one.');
       } else {
         toast.error(error.message);
       }
     } else {
       toast.success('Account created! Please check your email to verify your account.');
     }
+
     setLoading(false);
   };
 
@@ -100,12 +117,13 @@ const Auth = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="login" className="w-full">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="login">Sign In</TabsTrigger>
                   <TabsTrigger value="signup">Sign Up</TabsTrigger>
                 </TabsList>
-                
+
+                {/* LOGIN */}
                 <TabsContent value="login">
                   <form onSubmit={handleLogin} className="space-y-4">
                     <div className="space-y-2">
@@ -137,12 +155,23 @@ const Auth = () => {
                           Signing In...
                         </>
                       ) : (
-                        'Sign In'
+                        "Sign In"
                       )}
                     </Button>
                   </form>
+
+                  <div className="mt-3 text-center">
+                    <button
+                      type="button"
+                      className="text-sm text-blue-600 hover:underline"
+                      onClick={() => navigate("/forgot-password")}
+                    >
+                      Forgot your password?
+                    </button>
+                  </div>
                 </TabsContent>
 
+                {/* SIGNUP */}
                 <TabsContent value="signup">
                   <form onSubmit={handleSignup} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
@@ -167,7 +196,7 @@ const Auth = () => {
                         />
                       </div>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="signup-business">Business Name</Label>
                       <Input
