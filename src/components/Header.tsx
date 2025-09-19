@@ -208,7 +208,7 @@ const Header = () => {
                         <span className="text-sm font-medium text-gray-700">My Profile</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem 
-                        onClick={() => navigate('/booking')}
+                        onClick={() => navigate('/profile?tab=bookings')}
                         className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-50 cursor-pointer"
                       >
                         <FileText className="w-4 h-4 text-gray-600" />
@@ -247,7 +247,7 @@ const Header = () => {
                 className="lg:hidden"
                 onClick={() => setMobileMenuOpen(true)}
               >
-                <Menu className="h-6 w-6 text-gray-700" />
+                <Menu className="h-10 w-10 text-gray-700" />
               </Button>
             </div>
           </div>
@@ -261,9 +261,9 @@ const Header = () => {
             {/* Mobile Menu Header */}
             <div className="p-6 border-b border-gray-100">
               <img 
-                src="/lovable-uploads/a79e44cd-5cd8-4248-aa3a-3b2071208a15.png" 
+                src="/lovable-uploads/4d1ca312-1fa6-4205-9ba7-717a631fe2fe.png" 
                 alt="Fleetory" 
-                className="h-10 w-auto"
+                className="h-20 w-auto"
               />
             </div>
             

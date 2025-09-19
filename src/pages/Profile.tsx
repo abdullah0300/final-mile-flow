@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,11 +36,13 @@ interface Booking {
 const Profile = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [activeTab, setActiveTab] = useState("profile");
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -48,22 +50,46 @@ const Profile = () => {
     phone: ""
   });
 
- useEffect(() => {
-  // Check if we're still loading auth state
-  const checkAuth = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      navigate("/auth", { state: { from: { pathname: "/profile" } } });
-      return;
+  // Set active tab based on URL parameter
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab === "bookings") {
+      setActiveTab("bookings");
+    } else {
+      // Default to profile tab if no parameter or if it's "profile"
+      setActiveTab("profile");
     }
-    if (user) {
+  }, [searchParams]);
+
+  // Handle tab change and update URL
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    // Update URL parameter without causing navigation
+    // Use replace to avoid adding to history stack
+    if (value === "bookings") {
+      setSearchParams({ tab: "bookings" }, { replace: true });
+    } else if (value === "profile") {
+      // Clear the tab parameter when on profile to have cleaner URL
+      setSearchParams({}, { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    // Only check auth if user is not already set
+    if (!user) {
+      const checkAuth = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          navigate("/auth", { state: { from: { pathname: "/profile" } } });
+        }
+      };
+      checkAuth();
+    } else {
+      // User is authenticated, fetch data
       fetchProfile();
       fetchBookings();
     }
-  };
-  
-  checkAuth();
-}, [user, navigate]);
+  }, [user, navigate]);
 
   const fetchProfile = async () => {
     try {
@@ -186,8 +212,8 @@ const Profile = () => {
       <div className="container mx-auto px-6 py-8">
         <h1 className="text-3xl font-bold text-foreground mb-8">My Account</h1>
 
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full md:w-[400px] grid-cols-2">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
+          <TabsList className="grid w-full md:w-[400px] grid-cols-2 mt-20">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="bookings">My Bookings</TabsTrigger>
           </TabsList>

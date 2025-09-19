@@ -298,6 +298,9 @@ const { user } = useAuth();
             <div className="text-white/60 text-sm">
               © 2024 Fleetory. All rights reserved.
             </div>
+             <div className="text-white/60 text-sm">
+            Developed by <a href="http://webcraftio.com/"><span className="font-medium text-orange-400">WebCraftio</span></a>
+            </div>
             <div className="flex space-x-6 text-sm text-white/60">
               <a
                 href="/privacypolicy"
