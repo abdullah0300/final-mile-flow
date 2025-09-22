@@ -340,31 +340,33 @@ const Booking = () => {
 
       if (error) throw error;
 
-      // Send email notifications
-      const emailError = await supabase.functions.invoke("send-booking-email", {
-        body: {
-          referenceNumber: reference,
-          customerName: data.customerName,
-          customerEmail: data.customerEmail,
-          customerPhone: data.customerPhone,
-          collectFrom: data.collectFrom,
-          deliverTo: data.deliverTo,
-          serviceType: data.serviceType,
-          vehicleType: data.vehicleType,
-          description: data.description,
-          pricing: pricing,
-          bookingType: bookingMode,
-          paymentStatus:
-            paymentType === "pay-now" ? "pending_payment" : "unpaid",
-          collectionDate: data.collectionDate,
-          collectionTime: data.collectionTime,
-          deliveryDate: data.deliveryDate,
-          deliveryTime: data.deliveryTime,
-        },
-      });
+      // ONLY send email for "Book Now" (unpaid bookings)
+      // For "Pay Now", email will be sent after successful payment via Stripe webhook
+      if (paymentType === "book-now") {
+        const emailError = await supabase.functions.invoke("send-booking-email", {
+          body: {
+            referenceNumber: reference,
+            customerName: data.customerName,
+            customerEmail: data.customerEmail,
+            customerPhone: data.customerPhone,
+            collectFrom: data.collectFrom,
+            deliverTo: data.deliverTo,
+            serviceType: data.serviceType,
+            vehicleType: data.vehicleType,
+            description: data.description,
+            pricing: pricing,
+            bookingType: bookingMode,
+            paymentStatus: "unpaid",
+            collectionDate: data.collectionDate,
+            collectionTime: data.collectionTime,
+            deliveryDate: data.deliveryDate,
+            deliveryTime: data.deliveryTime,
+          },
+        });
 
-      if (emailError.error) {
-        console.error("Email sending failed:", emailError.error);
+        if (emailError.error) {
+          console.error("Email sending failed:", emailError.error);
+        }
       }
 
       // Handle payment flow for "Pay Now"
@@ -1251,7 +1253,7 @@ const Booking = () => {
                     </div>
 
                     {/* Proceed Button */}
-                    {pricing.total > 0 && (
+                    {/* {pricing.total > 0 && (
                       <Button
                       className="hidden lg:block w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 mt-4"
                       onClick={() => {
@@ -1264,7 +1266,7 @@ const Booking = () => {
                       Proceed to payment
                     </Button>
 
-                    )}
+                    )} */}
                    {/* Buttons only visible on mobile */}
 <div className="flex md:hidden gap-4">
   <Button
