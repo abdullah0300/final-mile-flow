@@ -33,6 +33,7 @@ import {
   User,
   UserPlus,
   CreditCard,
+  Phone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -239,6 +240,12 @@ const Booking = () => {
   // Auto-calculate pricing when addresses and vehicle type change
   useEffect(() => {
     const calculateInstantPrice = async () => {
+      // Skip pricing calculation for Luton Van
+      if (watchedVehicleType === "Luton Van") {
+        setPricing({ collection: 0, delivery: 0, price: 0, vat: 0, total: 0 });
+        return;
+      }
+
       if (!watchedCollectFrom || !watchedDeliverTo || !watchedVehicleType) {
         setPricing({ collection: 0, delivery: 0, price: 0, vat: 0, total: 0 });
         return;
@@ -305,6 +312,12 @@ const Booking = () => {
     data: BookingFormData,
     paymentType: "book-now" | "pay-now" = "book-now"
   ) => {
+    // Prevent submission for Luton Van
+    if (watchedVehicleType === "Luton Van") {
+      toast.error("Please contact us directly for Luton Van bookings");
+      return;
+    }
+
     if (!pricing || pricing.total === 0) {
       toast.error("Please wait for pricing calculation to complete");
       return;
@@ -1067,81 +1080,104 @@ const Booking = () => {
                   )}
 
                   {/* Buttons only visible on desktop */}
-<div className="hidden md:flex gap-4">
-  <Button
-    type="submit"
-    disabled={isSubmitting || !watch("acceptTerms")}
-    onClick={(e) => {
-      e.preventDefault();
-      handleSubmit((data) => onSubmit(data, "pay-now"))();
-    }}
-    className={cn(
-      "bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg",
-      user ? "flex-1" : "w-full"
-    )}
-  >
-    {isSubmitting ? (
-      <>
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        Processing...
-      </>
-    ) : (
-      <>
-        <CreditCard className="mr-2 h-5 w-5" />
-        Pay Now
-      </>
-    )}
-  </Button>
+                  <div className="hidden md:flex gap-4">
+                    {watchedVehicleType === "Luton Van" ? (
+                      // Show call-to-action button for Luton Van
+                      <div className="w-full">
+                        <Button
+                          type="button"
+                          onClick={() => window.location.href = '/contact#callback'}
+                          className="w-full bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg"
+                        >
+                          <Phone className="mr-2 h-5 w-5" />
+                          Request Luton Van Quote
+                        </Button>
+                        <p className="mt-2 text-sm text-center text-muted-foreground">
+                          Or call us directly on 01332 492501
+                        </p>
+                      </div>
+                    ) : (
+                      // Show normal booking buttons for other vehicles
+                      <>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting || !watch("acceptTerms")}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSubmit((data) => onSubmit(data, "pay-now"))();
+                          }}
+                          className={cn(
+                            "bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg",
+                            user ? "flex-1" : "w-full"
+                          )}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            <>
+                              <CreditCard className="mr-2 h-5 w-5" />
+                              Pay Now
+                            </>
+                          )}
+                        </Button>
 
-  {/* Only show Book Now button if user is logged in */}
-  {user && (
-    <Button
-      type="submit"
-      disabled={isSubmitting || !watch("acceptTerms")}
-      onClick={(e) => {
-        e.preventDefault();
-        handleSubmit((data) => onSubmit(data, "book-now"))();
-      }}
-      className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 text-lg"
-    >
-      {isSubmitting ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Processing...
-        </>
-      ) : (
-        <>
-          <CheckCircle className="mr-2 h-5 w-5" />
-          Book Now
-        </>
-      )}
-    </Button>
-  )}
-</div>
+                        {/* Only show Book Now button if user is logged in */}
+                        {user && (
+                          <Button
+                            type="submit"
+                            disabled={isSubmitting || !watch("acceptTerms")}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleSubmit((data) => onSubmit(data, "book-now"))();
+                            }}
+                            className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 text-lg"
+                          >
+                            {isSubmitting ? (
+                              <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Processing...
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle className="mr-2 h-5 w-5" />
+                                Book Now
+                              </>
+                            )}
+                          </Button>
+                        )}
+                      </>
+                    )}
+                  </div>
 
-{/* Info text - only visible on big screens */}
-<div className="mt-4 text-left text-sm text-muted-foreground hidden md:block">
-  {user ? (
-    <>
-      <p>
-        <strong>Pay Now: </strong> Secure your booking with immediate card payment.
-      </p>
-      <p>
-        <strong>Book Now:</strong> Reserve your booking today. You’ll receive an
-        invoice and can pay within the agreed terms.
-      </p>
-    </>
-  ) : (
-    <p className="text-amber-600">
-      <strong>Guest Checkout:</strong> Payment required at time of booking.{" "}
-      <a href="/auth" className="text-logistics-blue underline ml-1">
-        Sign in
-      </a>{" "}
-      for more payment options.
-    </p>
-  )}
-</div>
-
+                  {/* Info text - only visible on big screens */}
+                  <div className="mt-4 text-left text-sm text-muted-foreground hidden md:block">
+                    {watchedVehicleType === "Luton Van" ? (
+                      <p className="text-amber-600">
+                        <strong>Note:</strong> Luton Van bookings require direct consultation for accurate pricing.
+                      </p>
+                    ) : user ? (
+                      <>
+                        <p>
+                          <strong>Pay Now: </strong> Secure your booking with immediate card payment.
+                        </p>
+                        <p>
+                          <strong>Book Now:</strong> Reserve your booking today. You'll receive an
+                          invoice and can pay within the agreed terms.
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-amber-600">
+                        <strong>Guest Checkout:</strong> Payment required at time of booking.{" "}
+                        <a href="/auth" className="text-logistics-blue underline ml-1">
+                          Sign in
+                        </a>{" "}
+                        for more payment options.
+                      </p>
+                    )}
+                  </div>
 
                 </form>
               </div>
@@ -1184,7 +1220,7 @@ const Booking = () => {
                 </Card>
 
                 {/* Driving Distance - Below the map */}
-                {drivingDistance && pricing.total > 0 && (
+                {drivingDistance && pricing.total > 0 && watchedVehicleType !== "Luton Van" && (
                   <Card>
                     <CardContent className="p-4">
                       <div className="text-center">
@@ -1222,127 +1258,180 @@ const Booking = () => {
                       </div>
                     )}
 
-                    {/* Pricing calculation indicator */}
-                    {isCalculatingPrice && (
+                    {/* Special Luton Van Message */}
+                    {watchedVehicleType === "Luton Van" && (
+                      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                        <div className="flex items-start gap-3">
+                          <Phone className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                          <div className="space-y-2">
+                            <p className="text-sm font-semibold text-amber-900">
+                              Luton Van Booking
+                            </p>
+                            <p className="text-sm text-amber-800">
+                              For Luton Van services, please contact us directly:
+                            </p>
+                            <div className="space-y-1">
+                              <p className="text-sm font-medium text-amber-900">
+                                📞 Call: 01332 492501
+                              </p>
+                              <p className="text-sm text-amber-800">
+                                or complete our{" "}
+                                <a 
+                                  href="/contact#callback" 
+                                  className="text-logistics-blue underline font-medium"
+                                >
+                                  Request Call Back form
+                                </a>
+                              </p>
+                            </div>
+                            <p className="text-xs text-amber-700 mt-2">
+                              Our specialists will provide you with a custom quote for your Luton Van requirements.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Pricing calculation indicator - Don't show for Luton Van */}
+                    {isCalculatingPrice && watchedVehicleType !== "Luton Van" && (
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Loader2 className="w-4 h-4 animate-spin" />
                         <span className="text-sm">Calculating price...</span>
                       </div>
                     )}
 
-                    {/* Price breakdown */}
-                    <div className="space-y-3 border-t pt-4">
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">Price (exc. VAT)</span>
-                        <span className="text-sm font-medium">
-                          {pricing.price > 0 ? `£${pricing.price.toFixed(2)}` : "£0.00"}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">VAT</span>
-                        <span className="text-sm font-medium">
-                          {pricing.vat > 0 ? `£${pricing.vat.toFixed(2)}` : "£0.00"}
-                        </span>
-                      </div>
-                      <div className="border-t pt-3">
-                        <div className="flex justify-between text-lg font-bold">
-                          <span>Total Price</span>
-                          <span>{pricing.total > 0 ? `£${pricing.total.toFixed(2)}` : "£0.00"}</span>
+                    {/* Price breakdown - Only show if not Luton Van */}
+                    {watchedVehicleType !== "Luton Van" ? (
+                      <div className="space-y-3 border-t pt-4">
+                        <div className="flex justify-between">
+                          <span className="text-sm font-medium">Price (exc. VAT)</span>
+                          <span className="text-sm font-medium">
+                            {pricing.price > 0 ? `£${pricing.price.toFixed(2)}` : "£0.00"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm font-medium">VAT</span>
+                          <span className="text-sm font-medium">
+                            {pricing.vat > 0 ? `£${pricing.vat.toFixed(2)}` : "£0.00"}
+                          </span>
+                        </div>
+                        <div className="border-t pt-3">
+                          <div className="flex justify-between text-lg font-bold">
+                            <span>Total Price</span>
+                            <span>{pricing.total > 0 ? `£${pricing.total.toFixed(2)}` : "£0.00"}</span>
+                          </div>
                         </div>
                       </div>
+                    ) : (
+                      // Show placeholder for Luton Van
+                      <div className="border-t pt-4">
+                        <div className="text-center py-3">
+                          <p className="text-sm text-muted-foreground">
+                            Price available upon consultation
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Buttons only visible on mobile */}
+                    <div className="flex md:hidden gap-4">
+                      {watchedVehicleType === "Luton Van" ? (
+                        // Show call-to-action button for Luton Van
+                        <div className="w-full">
+                          <Button
+                            type="button"
+                            onClick={() => window.location.href = '/contact#callback'}
+                            className="w-full bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg"
+                          >
+                            <Phone className="mr-2 h-5 w-5" />
+                            Request Luton Van Quote
+                          </Button>
+                          <p className="mt-2 text-sm text-center text-muted-foreground">
+                            Or call us directly on 01332 492501
+                          </p>
+                        </div>
+                      ) : (
+                        // Show normal booking buttons for other vehicles
+                        <>
+                          <Button
+                            type="submit"
+                            disabled={isSubmitting || !watch("acceptTerms")}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleSubmit((data) => onSubmit(data, "pay-now"))();
+                            }}
+                            className={cn(
+                              "bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg",
+                              user ? "flex-1" : "w-full"
+                            )}
+                          >
+                            {isSubmitting ? (
+                              <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Processing...
+                              </>
+                            ) : (
+                              <>
+                                <CreditCard className="mr-2 h-5 w-5" />
+                                Pay Now
+                              </>
+                            )}
+                          </Button>
+
+                          {/* Only show Book Now button if user is logged in */}
+                          {user && (
+                            <Button
+                              type="submit"
+                              disabled={isSubmitting || !watch("acceptTerms")}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleSubmit((data) => onSubmit(data, "book-now"))();
+                              }}
+                              className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 text-lg"
+                            >
+                              {isSubmitting ? (
+                                <>
+                                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                  Processing...
+                                </>
+                              ) : (
+                                <>
+                                  <CheckCircle className="mr-2 h-5 w-5" />
+                                  Book Now
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </>
+                      )}
                     </div>
 
-                    {/* Proceed Button */}
-                    {/* {pricing.total > 0 && (
-                      <Button
-                      className="hidden lg:block w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 mt-4"
-                      onClick={() => {
-                        // Scroll to form submission
-                        document
-                          .querySelector('button[type="submit"]')
-                          ?.scrollIntoView({ behavior: "smooth" });
-                      }}
-                    >
-                      Proceed to payment
-                    </Button>
-
-                    )} */}
-                   {/* Buttons only visible on mobile */}
-<div className="flex md:hidden gap-4">
-  <Button
-    type="submit"
-    disabled={isSubmitting || !watch("acceptTerms")}
-    onClick={(e) => {
-      e.preventDefault();
-      handleSubmit((data) => onSubmit(data, "pay-now"))();
-    }}
-    className={cn(
-      "bg-logistics-orange hover:bg-logistics-orange-light text-white font-semibold py-4 text-lg",
-      user ? "flex-1" : "w-full"
-    )}
-  >
-    {isSubmitting ? (
-      <>
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        Processing...
-      </>
-    ) : (
-      <>
-        <CreditCard className="mr-2 h-5 w-5" />
-        Pay Now
-      </>
-    )}
-  </Button>
-
-  {/* Only show Book Now button if user is logged in */}
-  {user && (
-    <Button
-      type="submit"
-      disabled={isSubmitting || !watch("acceptTerms")}
-      onClick={(e) => {
-        e.preventDefault();
-        handleSubmit((data) => onSubmit(data, "book-now"))();
-      }}
-      className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 text-lg"
-    >
-      {isSubmitting ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Processing...
-        </>
-      ) : (
-        <>
-          <CheckCircle className="mr-2 h-5 w-5" />
-          Book Now
-        </>
-      )}
-    </Button>
-  )}
-</div>
-
-{/* Info text - only visible on mobile */}
-<div className="mt-4 text-left text-sm text-muted-foreground block md:hidden">
-  {user ? (
-    <>
-      <p>
-        <strong>Pay Now: </strong> Secure your booking with immediate card payment.
-      </p>
-      <p>
-        <strong>Book Now:</strong> Reserve your booking today. You’ll receive an
-        invoice and can pay within the agreed terms.
-      </p>
-    </>
-  ) : (
-    <p className="text-amber-600">
-      <strong>Guest Checkout:</strong> Payment required at time of booking.{" "}
-      <a href="/auth" className="text-logistics-blue underline ml-1">
-        Sign in
-      </a>{" "}
-      for more payment options.
-    </p>
-  )}
-</div>
-
+                    {/* Info text - only visible on mobile */}
+                    <div className="mt-4 text-left text-sm text-muted-foreground block md:hidden">
+                      {watchedVehicleType === "Luton Van" ? (
+                        <p className="text-amber-600">
+                          <strong>Note:</strong> Luton Van bookings require direct consultation for accurate pricing.
+                        </p>
+                      ) : user ? (
+                        <>
+                          <p>
+                            <strong>Pay Now: </strong> Secure your booking with immediate card payment.
+                          </p>
+                          <p>
+                            <strong>Book Now:</strong> Reserve your booking today. You'll receive an
+                            invoice and can pay within the agreed terms.
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-amber-600">
+                          <strong>Guest Checkout:</strong> Payment required at time of booking.{" "}
+                          <a href="/auth" className="text-logistics-blue underline ml-1">
+                            Sign in
+                          </a>{" "}
+                          for more payment options.
+                        </p>
+                      )}
+                    </div>
 
                   </CardContent>
                 </Card>

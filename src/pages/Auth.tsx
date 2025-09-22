@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import EmailVerificationModal from '@/components/EmailVerificationModal';
 
 const Auth = () => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,10 @@ const Auth = () => {
     phone: ''
   });
   const [activeTab, setActiveTab] = useState("login");
+  
+  // New states for email verification modal
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
 
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
@@ -43,7 +48,17 @@ const Auth = () => {
 
     if (error) {
       console.error("Login error:", error);
-      toast.error(error.message);
+      
+      // Check if it's an unverified email error
+      if (error.message?.includes('email not confirmed') || error.message?.includes('Email not confirmed')) {
+        toast.error('Please verify your email before signing in. Check your inbox for the verification link.');
+        
+        // Optionally show the verification modal again
+        setRegisteredEmail(loginForm.email);
+        setShowVerificationModal(true);
+      } else {
+        toast.error(error.message);
+      }
     } else {
       toast.success('Welcome back!');
       navigate(from, { replace: true });
@@ -77,7 +92,7 @@ const Auth = () => {
       phone: signupForm.phone
     });
 
-    // 🔑 Correct fix: check identities array
+    // Check if user already exists
     if (data?.user && data.user.identities?.length === 0) {
       toast.error("An account with this email already exists. Please sign in instead.");
       setActiveTab("login");
@@ -97,11 +112,25 @@ const Auth = () => {
       } else {
         toast.error(error.message);
       }
+      setLoading(false);
     } else {
-      toast.success('Account created! Please check your email to verify your account.');
+      // Success! Show the verification modal instead of just a toast
+      setRegisteredEmail(signupForm.email);
+      setShowVerificationModal(true);
+      
+      // Clear the form
+      setSignupForm({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        firstName: '',
+        lastName: '',
+        businessName: '',
+        phone: ''
+      });
+      
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -272,6 +301,14 @@ const Auth = () => {
           </Card>
         </div>
       </div>
+
+      {/* Email Verification Modal */}
+      <EmailVerificationModal
+        isOpen={showVerificationModal}
+        onClose={() => setShowVerificationModal(false)}
+        email={registeredEmail}
+      />
+
       <Footer />
     </div>
   );

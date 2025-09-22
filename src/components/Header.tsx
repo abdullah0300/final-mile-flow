@@ -1,16 +1,17 @@
+// src/components/Header.tsx
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
-import { User, LogOut, Menu, ChevronDown, Truck, Building, Phone, FileText } from "lucide-react";
+import { User, LogOut, Menu, ChevronDown, Truck, Building, Phone, FileText, BookOpen, Settings } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Header = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   
@@ -22,7 +23,6 @@ const Header = () => {
         console.error('Sign out error:', error);
       } else {
         toast.success('Signed out successfully');
-        // Wait a moment for state to update
         setTimeout(() => {
           navigate('/');
         }, 100);
@@ -35,14 +35,19 @@ const Header = () => {
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
+  // Helper function to handle navigation
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
       <div className="w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <a 
-              href="/" 
+            <Link 
+              to="/" 
               className="flex items-center hover:opacity-90 transition-opacity duration-200"
             >
               <img 
@@ -50,19 +55,19 @@ const Header = () => {
                 alt="Fleetory Logo" 
                 className="" style={{ height: '200px' }} 
               />
-            </a>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
               <NavigationMenu>
                 <NavigationMenuList className="flex items-center gap-1">
                   <NavigationMenuItem>
-                    <NavigationMenuLink 
-                      href="/" 
+                    <button
+                      onClick={() => handleNavigation('/')}
                       className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
                     >
                       Home
-                    </NavigationMenuLink>
+                    </button>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
@@ -73,9 +78,9 @@ const Header = () => {
                     <NavigationMenuContent>
                       <div className="w-[400px] p-4 bg-white shadow-xl rounded-xl border border-gray-100">
                         <div className="grid gap-2">
-                          <NavigationMenuLink 
-                            href="/services/same-day-delivery" 
-                            className="block p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                          <button
+                            onClick={() => handleNavigation('/services/same-day-delivery')}
+                            className="block w-full text-left p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
                           >
                             <div className="font-semibold text-gray-900 group-hover:text-logistics-blue mb-1">
                               Same Day Delivery
@@ -83,10 +88,10 @@ const Header = () => {
                             <div className="text-sm text-gray-600">
                               Urgent deliveries with rapid collection
                             </div>
-                          </NavigationMenuLink>
-                          <NavigationMenuLink 
-                            href="/services/timed-delivery" 
-                            className="block p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                          </button>
+                          <button
+                            onClick={() => handleNavigation('/services/timed-delivery')}
+                            className="block w-full text-left p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
                           >
                             <div className="font-semibold text-gray-900 group-hover:text-logistics-blue mb-1">
                               Timed Delivery
@@ -94,10 +99,10 @@ const Header = () => {
                             <div className="text-sm text-gray-600">
                               Scheduled pickup with guaranteed time slots
                             </div>
-                          </NavigationMenuLink>
-                          <NavigationMenuLink 
-                            href="/services/light-haulage" 
-                            className="block p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                          </button>
+                          <button
+                            onClick={() => handleNavigation('/services/light-haulage')}
+                            className="block w-full text-left p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
                           >
                             <div className="font-semibold text-gray-900 group-hover:text-logistics-blue mb-1">
                               Light Haulage
@@ -105,20 +110,19 @@ const Header = () => {
                             <div className="text-sm text-gray-600">
                               From small packages to large palletised goods
                             </div>
-                          </NavigationMenuLink>
-                          
+                          </button>
                         </div>
                       </div>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <NavigationMenuLink 
-                      href="/fleet" 
+                    <button
+                      onClick={() => handleNavigation('/fleet')}
                       className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
                     >
                       Our Fleet
-                    </NavigationMenuLink>
+                    </button>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
@@ -130,17 +134,17 @@ const Header = () => {
                       <div className="w-[400px] p-4 bg-white shadow-xl rounded-xl border border-gray-100">
                         <div className="grid gap-2">
                           {[
-                            { href: "/industries/healthcare", title: "Healthcare & Medical", desc: "Medical supplies transport" },
-                            { href: "/industries/legal-services", title: "Legal Services", desc: "Document delivery & court filing" },
-                            { href: "/industries/construction", title: "Construction & Trade", desc: "Building materials logistics" },
-                            { href: "/industries/retail", title: "Retail & E-commerce", desc: "Last-mile delivery solutions" },
-                            { href: "/industries/manufacturing", title: "Manufacturing", desc: "Just-in-time parts delivery" },
-                            { href: "/industries/residential", title: "Residential", desc: "House removals & furniture" }
+                            { path: "/industries/healthcare", title: "Healthcare & Medical", desc: "Medical supplies transport" },
+                            { path: "/industries/legal-services", title: "Legal Services", desc: "Document delivery & court filing" },
+                            { path: "/industries/construction", title: "Construction & Trade", desc: "Building materials logistics" },
+                            { path: "/industries/retail", title: "Retail & E-commerce", desc: "Last-mile delivery solutions" },
+                            { path: "/industries/manufacturing", title: "Manufacturing", desc: "Just-in-time parts delivery" },
+                            { path: "/industries/residential", title: "Residential", desc: "House removals & furniture" }
                           ].map((item) => (
-                            <NavigationMenuLink 
-                              key={item.href}
-                              href={item.href} 
-                              className="block p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                            <button
+                              key={item.path}
+                              onClick={() => handleNavigation(item.path)}
+                              className="block w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
                             >
                               <div className="font-semibold text-gray-900 group-hover:text-logistics-blue text-sm mb-0.5">
                                 {item.title}
@@ -148,7 +152,7 @@ const Header = () => {
                               <div className="text-xs text-gray-600">
                                 {item.desc}
                               </div>
-                            </NavigationMenuLink>
+                            </button>
                           ))}
                         </div>
                       </div>
@@ -156,22 +160,45 @@ const Header = () => {
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <NavigationMenuLink 
-                      href="/about" 
+                    <button
+                      onClick={() => handleNavigation('/about')}
                       className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
                     >
                       About
-                    </NavigationMenuLink>
+                    </button>
+                  </NavigationMenuItem>
+
+                  {/* Blog Link */}
+                  <NavigationMenuItem>
+                    <button
+                      onClick={() => handleNavigation('/blog')}
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
+                    >
+                      Blog
+                    </button>
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <NavigationMenuLink 
-                      href="/contact" 
+                    <button
+                      onClick={() => handleNavigation('/contact')}
                       className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
                     >
                       Contact
-                    </NavigationMenuLink>
+                    </button>
                   </NavigationMenuItem>
+
+                  {/* Admin Blog Link - Only show if admin */}
+                  {isAdmin && (
+                    <NavigationMenuItem>
+                      <button
+                        onClick={() => handleNavigation('/admin/blog')}
+                        className="px-4 py-2 text-sm font-medium text-logistics-orange hover:text-logistics-orange-light hover:bg-orange-50 rounded-lg transition-all duration-200 flex items-center"
+                      >
+                        <Settings className="w-4 h-4 mr-1" />
+                        Blog Admin
+                      </button>
+                    </NavigationMenuItem>
+                  )}
                 </NavigationMenuList>
               </NavigationMenu>
             </nav>
@@ -214,6 +241,21 @@ const Header = () => {
                         <FileText className="w-4 h-4 text-gray-600" />
                         <span className="text-sm font-medium text-gray-700">My Bookings</span>
                       </DropdownMenuItem>
+                      
+                      {/* Admin Blog Menu Item */}
+                      {isAdmin && (
+                        <>
+                          <DropdownMenuSeparator className="my-2" />
+                          <DropdownMenuItem 
+                            onClick={() => navigate('/admin/blog')}
+                            className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-orange-50 cursor-pointer"
+                          >
+                            <Settings className="w-4 h-4 text-logistics-orange" />
+                            <span className="text-sm font-medium text-logistics-orange">Blog Admin</span>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                      
                       <DropdownMenuSeparator className="my-2" />
                       <DropdownMenuItem 
                         onClick={async (e) => {
@@ -270,48 +312,58 @@ const Header = () => {
             {/* Mobile Menu Content */}
             <nav className="flex-1 overflow-y-auto p-6">
               <div className="space-y-1">
-                <a 
-                  href="/" 
-                  onClick={closeMobileMenu}
-                  className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                <button
+                  onClick={() => {
+                    handleNavigation('/');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
                 >
                   Home
-                </a>
+                </button>
 
                 <div className="pt-4 pb-2">
                   <h3 className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Services
                   </h3>
                 </div>
-                <a 
-                  href="/services/same-day-delivery" 
-                  onClick={closeMobileMenu}
-                  className="block px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                <button
+                  onClick={() => {
+                    handleNavigation('/services/same-day-delivery');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
                 >
                   Same Day Delivery
-                </a>
-                <a 
-                  href="/services/timed-delivery" 
-                  onClick={closeMobileMenu}
-                  className="block px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                </button>
+                <button
+                  onClick={() => {
+                    handleNavigation('/services/timed-delivery');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
                 >
                   Timed Delivery
-                </a>
-                <a 
-                  href="/services/light-haulage" 
-                  onClick={closeMobileMenu}
-                  className="block px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                </button>
+                <button
+                  onClick={() => {
+                    handleNavigation('/services/light-haulage');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
                 >
                   Light Haulage
-                </a>
+                </button>
 
-                <a 
-                  href="/fleet" 
-                  onClick={closeMobileMenu}
-                  className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                <button
+                  onClick={() => {
+                    handleNavigation('/fleet');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
                 >
                   Our Fleet
-                </a>
+                </button>
 
                 <div className="pt-4 pb-2">
                   <h3 className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
@@ -319,38 +371,67 @@ const Header = () => {
                   </h3>
                 </div>
                 {[
-                  { href: "/industries/healthcare", title: "Healthcare & Medical" },
-                  { href: "/industries/legal-services", title: "Legal Services" },
-                  { href: "/industries/construction", title: "Construction & Trade" },
-                  { href: "/industries/retail", title: "Retail & E-commerce" },
-                  { href: "/industries/manufacturing", title: "Manufacturing" },
-                  { href: "/industries/residential", title: "Residential" }
+                  { path: "/industries/healthcare", title: "Healthcare & Medical" },
+                  { path: "/industries/legal-services", title: "Legal Services" },
+                  { path: "/industries/construction", title: "Construction & Trade" },
+                  { path: "/industries/retail", title: "Retail & E-commerce" },
+                  { path: "/industries/manufacturing", title: "Manufacturing" },
+                  { path: "/industries/residential", title: "Residential" }
                 ].map((item) => (
-                  <a 
-                    key={item.href}
-                    href={item.href}
-                    onClick={closeMobileMenu}
-                    className="block px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                  <button
+                    key={item.path}
+                    onClick={() => {
+                      handleNavigation(item.path);
+                      closeMobileMenu();
+                    }}
+                    className="block w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
                   >
                     {item.title}
-                  </a>
+                  </button>
                 ))}
 
-                <a 
-                  href="/about" 
-                  onClick={closeMobileMenu}
-                  className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                <button
+                  onClick={() => {
+                    handleNavigation('/about');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
                 >
                   About Us
-                </a>
+                </button>
 
-                <a 
-                  href="/contact" 
-                  onClick={closeMobileMenu}
-                  className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                <button
+                  onClick={() => {
+                    handleNavigation('/blog');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Blog
+                </button>
+
+                <button
+                  onClick={() => {
+                    handleNavigation('/contact');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
                 >
                   Contact Us
-                </a>
+                </button>
+
+                {/* Admin Blog Link for Mobile */}
+                {isAdmin && (
+                  <button
+                    onClick={() => {
+                      handleNavigation('/admin/blog');
+                      closeMobileMenu();
+                    }}
+                    className="block w-full text-left px-4 py-3 rounded-lg text-logistics-orange font-medium hover:bg-orange-50 transition-colors"
+                  >
+                    Blog Admin
+                  </button>
+                )}
               </div>
             </nav>
 
@@ -379,6 +460,21 @@ const Header = () => {
                     <User className="w-4 h-4 mr-3" />
                     My Profile
                   </Button>
+                  
+                  {isAdmin && (
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        navigate('/admin/blog');
+                        closeMobileMenu();
+                      }}
+                      className="w-full justify-start text-logistics-orange hover:text-logistics-orange-light"
+                    >
+                      <Settings className="w-4 h-4 mr-3" />
+                      Blog Admin
+                    </Button>
+                  )}
+                  
                   <Button
                     variant="ghost"
                     onClick={async () => {

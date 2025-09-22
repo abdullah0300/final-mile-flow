@@ -1,3 +1,4 @@
+// src/App.tsx
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -33,6 +34,11 @@ import ScrollToTop from "../ScrollToTop";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
+// Blog imports
+import BlogList from "./pages/BlogList";
+import BlogPost from "./pages/BlogPost";
+import BlogAdmin from "./pages/admin/BlogAdmin";
+import BlogEditor from "./pages/admin/BlogEditor";
 
 const queryClient = new QueryClient();
 
@@ -69,9 +75,17 @@ const App = () => (
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/cookies" element={<CookiePolicy />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            
+            {/* Blog Routes */}
+            <Route path="/blog" element={<BlogList />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            
+            {/* Admin Blog Routes */}
+            <Route path="/admin/blog" element={<BlogAdmin />} />
+            <Route path="/admin/blog/new" element={<BlogEditor />} />
+            <Route path="/admin/blog/edit/:id" element={<BlogEditor />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

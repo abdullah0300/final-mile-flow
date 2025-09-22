@@ -1,3 +1,4 @@
+// src/hooks/useAuth.tsx
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,6 +7,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  isAdmin: boolean; // Added
   signUp: (email: string, password: string, metadata?: any) => Promise<{ data: any; error: any }>;
   signIn: (email: string, password: string) => Promise<{ data: any; error: any }>;
   signOut: () => Promise<{ error: any }>;
@@ -25,6 +27,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false); // Added
+
+  // Check if user is admin
+  const checkAdminStatus = async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('user_id', userId)
+        .single();
+      
+      setIsAdmin(data?.is_admin || false);
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+      setIsAdmin(false);
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -35,6 +54,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (mounted) {
           setSession(session);
           setUser(session?.user ?? null);
+          
+          // Check admin status if user exists
+          if (session?.user) {
+            await checkAdminStatus(session.user.id);
+          }
+          
           setLoading(false);
         }
       } catch (error) {
@@ -52,6 +77,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (mounted) {
           setSession(session);
           setUser(session?.user ?? null);
+          
+          // Check admin status on auth state change
+          if (session?.user) {
+            await checkAdminStatus(session.user.id);
+          } else {
+            setIsAdmin(false);
+          }
+          
           setLoading(false);
         }
       }
@@ -84,6 +117,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       password,
     });
 
+    // Check admin status after successful sign in
+    if (!error && data.user) {
+      await checkAdminStatus(data.user.id);
+    }
+
     return { data, error };
   };
 
@@ -92,6 +130,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (!error) {
       setUser(null);
       setSession(null);
+      setIsAdmin(false); // Reset admin status
     }
     return { error };
   };
@@ -100,6 +139,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     user,
     session,
     loading,
+    isAdmin, // Added
     signUp,
     signIn,
     signOut,
