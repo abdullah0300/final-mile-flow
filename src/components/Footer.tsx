@@ -184,6 +184,14 @@ const { user } = useAuth();
               </li>
               <li>
                 <a
+                  href="/blog"
+                  className="hover:text-logistics-orange transition-colors duration-200"
+                >
+                  Blogs
+                </a>
+              </li>
+              <li>
+                <a
                   href="/booking"
                   className="hover:text-logistics-orange transition-colors duration-200"
                 >

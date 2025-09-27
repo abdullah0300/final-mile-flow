@@ -40,6 +40,13 @@ import BlogPost from "./pages/BlogPost";
 import BlogAdmin from "./pages/admin/BlogAdmin";
 import BlogEditor from "./pages/admin/BlogEditor";
 
+// Location imports
+import Locations from "./pages/Locations";
+import Derby from "./pages/locations/Derby";
+import Birmingham from "./pages/locations/Birmingham";
+import Manchester from "./pages/locations/Manchester";
+import London from "./pages/locations/London";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -77,11 +84,18 @@ const App = () => (
             <Route path="/cookies" element={<CookiePolicy />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            
+
+            {/* Location Routes */}
+            <Route path="/locations" element={<Locations />} />
+            <Route path="/locations/derby" element={<Derby />} />
+            <Route path="/locations/birmingham" element={<Birmingham />} />
+            <Route path="/locations/manchester" element={<Manchester />} />
+            <Route path="/locations/london" element={<London />} />
+
             {/* Blog Routes */}
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            
+
             {/* Admin Blog Routes */}
             <Route path="/admin/blog" element={<BlogAdmin />} />
             <Route path="/admin/blog/new" element={<BlogEditor />} />

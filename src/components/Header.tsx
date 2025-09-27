@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
-import { User, LogOut, Menu, ChevronDown, Truck, Building, Phone, FileText, BookOpen, Settings } from "lucide-react";
+import { User, LogOut, Menu, ChevronDown, Truck, Building, Phone, FileText, BookOpen, Settings, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -60,7 +60,7 @@ const Header = () => {
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
               <NavigationMenu>
-                <NavigationMenuList className="flex items-center gap-1">
+                <NavigationMenuList className="flex items-center ">
                   <NavigationMenuItem>
                     <button
                       onClick={() => handleNavigation('/')}
@@ -127,6 +127,49 @@ const Header = () => {
 
                   <NavigationMenuItem>
                     <NavigationMenuTrigger className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      Locations
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="w-[400px] p-4 bg-white shadow-xl rounded-xl border border-gray-100">
+                        <div className="grid gap-2">
+                          <button
+                            onClick={() => handleNavigation('/locations')}
+                            className="block w-full text-left p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                          >
+                            <div className="font-semibold text-gray-900 group-hover:text-logistics-blue mb-1">
+                              All Locations
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              View all cities and areas we cover nationwide
+                            </div>
+                          </button>
+                          {[
+                            { path: "/locations/london", title: "London", desc: "Express collection across Greater London" },
+                            { path: "/locations/birmingham", title: "Birmingham", desc: "Professional service in West Midlands" },
+                            { path: "/locations/manchester", title: "Manchester", desc: "Rapid collections in Greater Manchester" },
+                            { path: "/locations/derby", title: "Derby", desc: "Fast local service across Derbyshire" }
+                          ].map((location) => (
+                            <button
+                              key={location.path}
+                              onClick={() => handleNavigation(location.path)}
+                              className="block w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
+                            >
+                              <div className="font-semibold text-gray-900 group-hover:text-logistics-blue text-sm mb-0.5">
+                                {location.title}
+                              </div>
+                              <div className="text-xs text-gray-600">
+                                {location.desc}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200">
                       <Building className="w-4 h-4 mr-2" />
                       Industries
                     </NavigationMenuTrigger>
@@ -169,14 +212,14 @@ const Header = () => {
                   </NavigationMenuItem>
 
                   {/* Blog Link */}
-                  <NavigationMenuItem>
+                  {/* <NavigationMenuItem>
                     <button
                       onClick={() => handleNavigation('/blog')}
                       className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-logistics-blue hover:bg-gray-50 rounded-lg transition-all duration-200"
                     >
                       Blog
                     </button>
-                  </NavigationMenuItem>
+                  </NavigationMenuItem> */}
 
                   <NavigationMenuItem>
                     <button
@@ -367,6 +410,57 @@ const Header = () => {
 
                 <div className="pt-4 pb-2">
                   <h3 className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Locations
+                  </h3>
+                </div>
+                <button
+                  onClick={() => {
+                    handleNavigation('/locations');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                >
+                  All Locations
+                </button>
+                <button
+                  onClick={() => {
+                    handleNavigation('/locations/london');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  London
+                </button>
+                <button
+                  onClick={() => {
+                    handleNavigation('/locations/birmingham');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  Birmingham
+                </button>
+                <button
+                  onClick={() => {
+                    handleNavigation('/locations/manchester');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  Manchester
+                </button>
+                <button
+                  onClick={() => {
+                    handleNavigation('/locations/derby');
+                    closeMobileMenu();
+                  }}
+                  className="block w-full text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  Derby
+                </button>
+
+                <div className="pt-4 pb-2">
+                  <h3 className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Industries
                   </h3>
                 </div>
@@ -400,7 +494,7 @@ const Header = () => {
                   About Us
                 </button>
 
-                <button
+                {/* <button
                   onClick={() => {
                     handleNavigation('/blog');
                     closeMobileMenu();
@@ -408,7 +502,7 @@ const Header = () => {
                   className="block w-full text-left px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
                 >
                   Blog
-                </button>
+                </button> */}
 
                 <button
                   onClick={() => {
