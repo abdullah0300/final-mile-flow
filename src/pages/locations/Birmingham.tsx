@@ -119,7 +119,7 @@ const Birmingham = () => {
               <div className="grid md:grid-cols-3 gap-8">
                 <div className="text-center">
                   <h3 className="font-semibold text-logistics-dark mb-2">
-                    Strategic base near the M6 and Midlands road network
+                    Trusted drivers serving Birmingham with local knowledge
                   </h3>
                 </div>
                 <div className="text-center">

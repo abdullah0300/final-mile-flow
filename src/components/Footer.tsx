@@ -19,9 +19,9 @@ const { user } = useAuth();
   return (
     <footer className="bg-logistics-dark text-white">
       <div className="container mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-8">
           {/* Company Info */}
-          <div className="space-y-4 lg:col-span-1">
+          <div className="space-y-4 lg:col-span-2">
             <div className="bg-white p-3 rounded-lg inline-block">
               <img
                 src="/lovable-uploads/a79e44cd-5cd8-4248-aa3a-3b2071208a15.png"
@@ -146,6 +146,56 @@ const { user } = useAuth();
                   className="hover:text-logistics-orange transition-colors duration-200"
                 >
                   Residential
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Locations */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold flex items-center">
+              <MapPin className="h-5 w-5 mr-2 text-logistics-orange" />
+              Locations
+            </h4>
+            <ul className="space-y-2 text-white/80 text-sm">
+              <li>
+                <a
+                  href="/locations"
+                  className="hover:text-logistics-orange transition-colors duration-200"
+                >
+                  All Locations
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/locations/london"
+                  className="hover:text-logistics-orange transition-colors duration-200"
+                >
+                  London
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/locations/birmingham"
+                  className="hover:text-logistics-orange transition-colors duration-200"
+                >
+                  Birmingham
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/locations/manchester"
+                  className="hover:text-logistics-orange transition-colors duration-200"
+                >
+                  Manchester
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/locations/derby"
+                  className="hover:text-logistics-orange transition-colors duration-200"
+                >
+                  Derby
                 </a>
               </li>
             </ul>
@@ -327,6 +377,12 @@ const { user } = useAuth();
                 className="hover:text-logistics-orange transition-colors duration-200"
               >
                 Cookie Policy
+              </a>
+              <a
+                href="/sitemap.xml"
+                className="hover:text-logistics-orange transition-colors duration-200"
+              >
+                Sitemap
               </a>
             </div>
           </div>
